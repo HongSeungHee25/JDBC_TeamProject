@@ -12,9 +12,9 @@ import lombok.ToString;
 @AllArgsConstructor
 @ToString
 public class Car_Inspection {
-
+//자동차 검사 DTO - 진만
 	private int car_id;
 	private String inspection_type;
-	private Date last_inspection;
-	private Date next_inspection;
+	private Date Last_date;
+	private Date Next_date;
 }
