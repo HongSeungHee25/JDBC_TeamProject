@@ -12,6 +12,7 @@ import lombok.ToString;
 @AllArgsConstructor
 @Builder
 public class Car_rent {
+	//자동차 렌트예약 DTO - 종화
 	private int rent_no;
 	private String customer_id;
 	private int car_id;
