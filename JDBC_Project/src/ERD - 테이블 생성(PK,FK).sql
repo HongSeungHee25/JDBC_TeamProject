@@ -18,10 +18,10 @@ CREATE TABLE car
 	car_id number NOT NULL,
 	car_grade varchar2(10) NOT NULL,
 	car_type varchar2(20) NOT NULL,
-	rent_Type varchar2(10) NOT NULL,
+	rent_Type varchar2(10),
 	price number NOT NULL,
 	insurance number NOT NULL,
-	car_no number NOT NULL UNIQUE,
+	car_no varchar2(30) NOT NULL UNIQUE,
 	PL varchar2(10) NOT NULL,
 	PRIMARY KEY (car_id)
 );
@@ -75,7 +75,7 @@ CREATE TABLE Payment
 	customer_id varchar2(20) NOT NULL,
 	rent_no number NOT NULL,
 	payment_day  date NOT NULL,
-	money number NOT NULL,
+	money number,
 	payment_method varchar2(30) NOT NULL,
 	car_id number NOT NULL,
 	PRIMARY KEY (payment_id),
