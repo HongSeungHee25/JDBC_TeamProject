@@ -12,6 +12,7 @@ import lombok.ToString;
 @AllArgsConstructor
 @Builder
 public class Payment {
+	//결제 정보관리 DTO - 종화
 	private int payment_id;
 	private String customer_id;
 	private int rent_no;
