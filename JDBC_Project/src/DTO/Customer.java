@@ -11,10 +11,11 @@ import lombok.ToString;
 @Builder
 public class Customer {
 	//회원 관리 DTO - 지수
-	private String customer_id;
 	private String pw;
 	private String name;
+	private String customer_id;
 	private String phone;
 	private String licence;
 }
+
 
