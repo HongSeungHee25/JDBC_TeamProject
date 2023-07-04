@@ -13,7 +13,7 @@ import lombok.ToString;
 public class Payment {
 	//결제 정보관리 DTO - 종화
 	private int payment_id;
-	private String customer_id;
+	private String name;
 	private int rent_no;
 	private String payment_day;
 	private int money;
