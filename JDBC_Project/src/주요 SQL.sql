@@ -11,33 +11,35 @@ LEFT JOIN CAR_RENT cr ON c.CAR_NO = cr.CAR_NO;
 -- 총 토탈 가격
 SELECT p.payment_id, p.name, p.payment_day, c.PRICE + c.INSURANCE AS money, p.PAYMENT_METHOD ,p.car_no
 FROM PAYMENT p JOIN CAR c 
-ON p.car_no = c.CAR_NO ;
+ON p.car_no = c.CAR_NO 
+ORDER BY p.PAYMENT_ID ;
 
 -- 총 토탈 가격 테이블
 CREATE TABLE TOTAL_PRICE 
 AS 
 SELECT p.payment_id, p.name, p.payment_day, c.PRICE + c.INSURANCE AS money, p.PAYMENT_METHOD ,p.car_no
 FROM PAYMENT p JOIN CAR c 
-ON p.car_no = c.CAR_NO ;
+ON p.car_no = c.CAR_NO 
+ORDER BY p.PAYMENT_ID ;
 
 SELECT * FROM TOTAL_PRICE;
 
 -- 월 별 매출 조회
-SELECT to_char(payment_day,'yyyy-mm') AS months, sum(money) AS total
+SELECT to_char(payment_day,'yyyy-mm') AS months, PAYMENT_METHOD, sum(money) AS total
 FROM (SELECT p.payment_id, p.name, p.payment_day, c.PRICE + c.INSURANCE AS money, p.PAYMENT_METHOD ,p.car_no
 		FROM PAYMENT p JOIN CAR c 
 		ON p.car_no = c.CAR_NO)
-GROUP BY to_char(payment_day,'yyyy-mm')
+GROUP BY to_char(payment_day,'yyyy-mm'),PAYMENT_METHOD
 ORDER BY months;
 
 -- 월별 토탈 가격 테이블
 CREATE TABLE month_total 
 AS 
-SELECT to_char(payment_day,'yyyy-mm') AS months, sum(money) AS total
+SELECT to_char(payment_day,'yyyy-mm') AS months, PAYMENT_METHOD, sum(money) AS total
 FROM (SELECT p.payment_id, p.name, p.payment_day, c.PRICE + c.INSURANCE AS money, p.PAYMENT_METHOD ,p.car_no
 		FROM PAYMENT p JOIN CAR c 
 		ON p.car_no = c.CAR_NO)
-GROUP BY to_char(payment_day,'yyyy-mm')
+GROUP BY to_char(payment_day,'yyyy-mm'),PAYMENT_METHOD
 ORDER BY months;
 
 SELECT * FROM month_total;
