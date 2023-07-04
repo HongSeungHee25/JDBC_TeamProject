@@ -31,7 +31,7 @@ CREATE TABLE car_inspection
 	car_no varchar2(30) NOT NULL,
 	Inspection_type varchar2(30) NOT NULL,
 	Last_date date NOT NULL,
-	Next_date date NOT NULL,
+	Next_date date,
 	PRIMARY KEY (car_no),
 	FOREIGN KEY (car_no) REFERENCES car (car_no)
 );
@@ -42,8 +42,8 @@ CREATE TABLE car_rent
 	rent_no number NOT NULL,
 	name varchar2(20) NOT NULL,
 	car_no varchar2(30) NOT NULL,
-	rent_start date NOT NULL,
-	rent_end date NOT NULL,
+	rent_start date,
+	rent_end date,
 	PRIMARY KEY (rent_no),
 	FOREIGN KEY (name) REFERENCES customer (name),
 	FOREIGN KEY (car_no) REFERENCES car (car_no)
@@ -71,14 +71,14 @@ CREATE TABLE manager
 CREATE TABLE Payment
 (
 	payment_id number NOT NULL,
-	customer_id varchar2(20) NOT NULL,
+	name varchar2(20) NOT NULL,
 	rent_no number NOT NULL,
-	payment_day  date NOT NULL,
+	payment_day  date,
 	money number,
-	payment_method varchar2(30) NOT NULL,
+	payment_method varchar2(30),
 	car_no varchar2(30) NOT NULL,
 	PRIMARY KEY (payment_id),
-	FOREIGN KEY (name) REFERENCES customer (name),
+	FOREIGN KEY (name) REFERENCES name (name),
 	FOREIGN KEY (rent_no) REFERENCES car_rent (rent_no),
 	FOREIGN KEY (car_no) REFERENCES car (car_no)
 );
