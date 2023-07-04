@@ -13,7 +13,7 @@ import lombok.ToString;
 @ToString
 public class Car_Inspection {
 //자동차 검사 DTO - 진만
-	private int car_id;
+	private String car_no;
 	private String inspection_type;
 	private Date Last_date;
 	private Date Next_date;
