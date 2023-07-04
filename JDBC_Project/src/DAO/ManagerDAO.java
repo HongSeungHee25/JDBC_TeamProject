@@ -85,9 +85,26 @@ public class ManagerDAO {
 		
 		List<Month_total> list = new ArrayList<>();
 		while(rs.next()) {
-			list.add(new Month_total(rs.getString(1), rs.getInt(2)));
+			list.add(new Month_total(rs.getString(1), rs.getString(2),rs.getInt(3)));
 		}
 		return list;
 	}
+	
+	//월별 토탈 신용카드 or 계좌이체 나눠서 조회 DAO - 승희
+	public Month_total payment_method(String pay)throws SQLException{
+		Connection connection = OracleUtility.getConnection();
+		String sql = "SELECT * FROM MONTH_TOTAL mt WHERE payment_method = ?";
+		PreparedStatement ps = connection.prepareStatement(sql);
+		ps.setString(1, pay);
+		ResultSet rs = ps.executeQuery();
+		Month_total total = null;
+				if(rs.next()) {
+					total = new Month_total(rs.getString(1), rs.getString(2), rs.getInt(3));
+				}
+				return total;
+	}
+	
+	
+	
 	
 }
