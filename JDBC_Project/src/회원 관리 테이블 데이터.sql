@@ -5,7 +5,7 @@ insert into customer values ('박길동','080324','kkd123','010-2456-4573','Y');
 insert into customer values ('강감찬','991123','asdf0147','010-3545-6676','Y');
 insert into customer values('정혜민','020815','hmm555','010-4352-3356','Y');
 insert into customer values('조연우','040602','yeonuuu','010-2453-6663','Y');
-insert into customer values('김현욱','001111','hyeonukki','010-7767-9266''Y');
+insert into customer values('김현욱','001111','hyeonukki','010-7767-9266','Y');
 insert into customer values('안주본','000216','jubon333','010-3454-9385','Y');
 insert into customer values('이하나','010118','hana118','010-2385-3957','Y');
 insert into customer values('남지우','000817','jiwoooo','010-4837-9873','Y');
