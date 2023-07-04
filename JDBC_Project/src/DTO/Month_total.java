@@ -12,6 +12,7 @@ import lombok.ToString;
 public class Month_total {
 	//월별 토탈 DTO - 승희
 	private String months;
+	private String payment_method;
 	private int total;
 	
 }
