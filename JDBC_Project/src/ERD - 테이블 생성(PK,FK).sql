@@ -27,6 +27,8 @@ CREATE TABLE car
 
 -- 자동차 관리 테이블 예시 데이터
 INSERT INTO CAR c VALUES ('123허1234','준중형','소나타',NULL,45000,10000,'기름');
+INSERT INTO CAR c VALUES ('124허1254','준중형','소나타',NULL,56000,10000,'기름');
+INSERT INTO CAR c VALUES ('145허1254','준중형','소나타',NULL,68400,15000,'기름');
 
 -- 자동차 검사 테이블
 CREATE TABLE car_inspection
@@ -59,6 +61,9 @@ CREATE TABLE car_rent
 -- 자동차 렌트 예약 테이블 예시 데이터
 INSERT INTO car_rent VALUES (1,'김모모','123허1234',NULL,NULL);
 INSERT INTO car_rent VALUES (1,'김모모','123허1234','2023-07-01','2023-07-03');
+INSERT INTO car_rent VALUES (2,'김모모','124허1254','2023-06-01','2023-06-03');
+INSERT INTO car_rent VALUES (3,'김모모','145허1254','2023-05-01','2023-05-03');
+INSERT INTO car_rent VALUES (4,'김사나','145허1254','2023-05-01','2023-05-03');
 
 -- 회원 관리 테이블
 CREATE TABLE customer
@@ -73,6 +78,7 @@ CREATE TABLE customer
 
 -- 회원 관리 테이블 예시 데이터
 INSERT INTO CUSTOMER c VALUES ('김모모','momo1234','154a','010-1234-1234',null);
+INSERT INTO CUSTOMER c VALUES ('김사나','sana','as154','010-4567-1548',null);
 
 -- 관리자 테이블
 CREATE TABLE manager
@@ -92,7 +98,7 @@ CREATE TABLE Payment
 	payment_method varchar2(30),
 	car_no varchar2(30) NOT NULL,
 	PRIMARY KEY (payment_id),
-	FOREIGN KEY (name) REFERENCES name (name),
+	FOREIGN KEY (name) REFERENCES customer (name),
 	FOREIGN KEY (rent_no) REFERENCES car_rent (rent_no),
 	FOREIGN KEY (car_no) REFERENCES car (car_no)
 );
@@ -100,4 +106,10 @@ CREATE TABLE Payment
 -- 결제 정보관리 테이블 예시 데이터 
 INSERT INTO PAYMENT p VALUES (1001,'김모모',1,sysdate,NULL,'신용카드','123허1234');
 INSERT INTO PAYMENT p VALUES (1001,'김모모',1,NULL ,NULL,'신용카드','123허1234');
-INSERT INTO PAYMENT p VALUES (1001,'김모모',1,'2023-06-30' ,NULL,'신용카드','123허1234');
+
+
+
+
+
+
+
