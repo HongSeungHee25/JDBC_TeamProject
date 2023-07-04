@@ -40,24 +40,24 @@ CREATE TABLE car_inspection
 CREATE TABLE car_rent
 (
 	rent_no number NOT NULL,
-	customer_id varchar2(20) NOT NULL,
+	name varchar2(20) NOT NULL,
 	car_no varchar2(30) NOT NULL,
 	rent_start date NOT NULL,
 	rent_end date NOT NULL,
 	PRIMARY KEY (rent_no),
-	FOREIGN KEY (customer_id) REFERENCES customer (customer_id),
+	FOREIGN KEY (name) REFERENCES customer (name),
 	FOREIGN KEY (car_no) REFERENCES car (car_no)
 );
 
 -- 회원 관리 테이블
 CREATE TABLE customer
 (
-	customer_id varchar2(20) NOT NULL,
-	pw varchar2(20) NOT NULL UNIQUE,
 	name varchar2(20) NOT NULL,
+	pw varchar2(20) NOT NULL UNIQUE,
+	customer_id varchar2(20) NOT NULL,
 	phone varchar2(20) NOT NULL,
 	license char(1) NOT NULL,
-	PRIMARY KEY (customer_id)
+	PRIMARY KEY (name)
 );
 
 -- 관리자 테이블
@@ -78,7 +78,7 @@ CREATE TABLE Payment
 	payment_method varchar2(30) NOT NULL,
 	car_no varchar2(30) NOT NULL,
 	PRIMARY KEY (payment_id),
-	FOREIGN KEY (customer_id) REFERENCES customer (customer_id),
+	FOREIGN KEY (name) REFERENCES customer (name),
 	FOREIGN KEY (rent_no) REFERENCES car_rent (rent_no),
 	FOREIGN KEY (car_no) REFERENCES car (car_no)
 );
