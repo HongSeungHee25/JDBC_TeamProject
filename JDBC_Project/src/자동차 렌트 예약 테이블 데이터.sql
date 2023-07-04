@@ -1,6 +1,7 @@
 -- 자동차 렌트 예약 테이블 데이터
-create sequence car_no_seq;
+create SEQUENCE rent_no_seq
 	start with 1;
+DROP SEQUENCE rent_no_seq;
 insert into car_rent values(rent_no_seq.nextval,'김지수','124호 5713','2022-01-01','2022-06-07');
 insert into car_rent values(rent_no_seq.nextval,'김규태','142하 3431','2023-04-30','2023-05-18');
 insert into car_rent values(rent_no_seq.nextval,'박길동','142하 3432','2022-03-04','2022-09-08');
