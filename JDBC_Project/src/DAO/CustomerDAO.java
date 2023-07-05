@@ -10,6 +10,12 @@ import java.util.List;
 import DTO.Customer;
 
 public class CustomerDAO {
+	
+	private static CustomerDAO dao = new CustomerDAO();
+	private CustomerDAO() {}
+	public static CustomerDAO getCustomerDAO() {
+		return dao;
+	}
 
 	//회원) 로그인 DAO - 승희
 	public Customer login(String id, String password) throws SQLException{
