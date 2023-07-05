@@ -12,6 +12,12 @@ import DTO.Month_total;
 import DTO.Payment;
 
 public class ManagerDAO {
+	
+	private static ManagerDAO dao = new ManagerDAO();
+	private ManagerDAO() {}
+	public static ManagerDAO getManagerDAO() {
+		return dao;
+	}
 
 	//회원별 매출 DAO - 승희
 	public List<Payment> sales() throws SQLException {
