@@ -16,7 +16,7 @@ public class CarSuperintendDAO {
 	//자동차 정보 조회 DAO - 병인
 	public List<Car_Superintend> selectAll() throws SQLException{
 	      Connection conn = OracleUtility.getConnection();
-	      String select = "select * from Car_Superintend";
+	      String select = "select * from car";
 	      PreparedStatement ps = conn.prepareStatement(select);
 	      ResultSet rs = ps.executeQuery();
 	      List<Car_Superintend> list = new ArrayList<>();
@@ -29,7 +29,7 @@ public class CarSuperintendDAO {
 	//자동차 번호로 조회 DAO - 병인
 	public Car_Superintend selectByCarNo(String car_no) throws SQLException{
 		   Connection conn = OracleUtility.getConnection();
-		   String select = "select * from Car_Superintend where car_no = ?";
+		   String select = "select * from Car where car_no = ?";
 		   PreparedStatement ps = conn.prepareStatement(select);
 		   ps.setString(1, car_no );
 		   ResultSet rs = ps.executeQuery();
