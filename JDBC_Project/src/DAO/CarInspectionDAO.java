@@ -12,6 +12,12 @@ import DTO.Car_Inspection;
 
 public class CarInspectionDAO {
 	
+	private static CarInspectionDAO carDao = new CarInspectionDAO();
+	private CarInspectionDAO() {}
+	public static CarInspectionDAO getCarInspectionDAO() {
+		return carDao;
+	}
+	
 	//자동차 검사 조회 DAO - 병인
 	public List<Car_Inspection> selectAll() throws SQLException{
 	      Connection conn = OracleUtility.getConnection();
@@ -23,6 +29,9 @@ public class CarInspectionDAO {
 	         
 	         list.add(new Car_Inspection(rs.getString(1), rs.getString(2), rs.getDate(3), rs.getDate(4)));
 	      }
+	      conn.close();
+		   ps.close();
+		   rs.close();
 	      
 	      return list;
 	   }
@@ -39,6 +48,10 @@ public class CarInspectionDAO {
 	      
 	      ci = new Car_Inspection(rs.getString(1), rs.getString(2), rs.getDate(3), rs.getDate(4));
 	   }
+	   conn.close();
+	   ps.close();
+	   rs.close();
+	   
 	   return ci;
 	}
 
