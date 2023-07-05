@@ -14,6 +14,12 @@ import DTO.Payment;
 
 
 public class PaymentDAO {
+	
+	private static PaymentDAO dao = new PaymentDAO();
+	private PaymentDAO() {}
+	public static PaymentDAO getPaymentDAO() {
+		return dao;
+	}
 
 	//결제정보 전체 조회 DAO - 병인
 	public List<Payment> selectAll() throws SQLException{
