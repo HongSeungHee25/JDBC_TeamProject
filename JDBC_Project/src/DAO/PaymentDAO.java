@@ -18,7 +18,7 @@ public class PaymentDAO {
 	//결제정보 전체 조회 DAO - 병인
 	public List<Payment> selectAll() throws SQLException{
 	      Connection conn = OracleUtility.getConnection();
-	      String select = "select * from car_rent";
+	      String select = "select * from Payment";
 	      PreparedStatement ps = conn.prepareStatement(select);
 	      ResultSet rs = ps.executeQuery();
 	      List<Payment> list = new ArrayList<>();
