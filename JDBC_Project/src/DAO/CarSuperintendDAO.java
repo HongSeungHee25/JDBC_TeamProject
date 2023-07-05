@@ -13,6 +13,12 @@ import DTO.Car_Superintend;
 
 public class CarSuperintendDAO {
 	
+	private static CarSuperintendDAO superintendDAO = new CarSuperintendDAO();
+	private CarSuperintendDAO() {}
+	public static CarSuperintendDAO getCarSuperintendDAO() {
+		return superintendDAO;
+	}
+	
 	//자동차 정보 조회 DAO - 병인
 	public List<Car_Superintend> selectAll() throws SQLException{
 	      Connection conn = OracleUtility.getConnection();
