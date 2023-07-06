@@ -1,6 +1,8 @@
 package DTO;
 
 
+import java.sql.Date;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -15,7 +17,7 @@ public class Car_rent {
 	private int rent_no;
 	private String name;
 	private String car_no;
-	private String rent_start;
-	private String rent_end;
+	private Date rent_start;
+	private Date rent_end;
 
 }
