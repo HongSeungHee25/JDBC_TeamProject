@@ -1,6 +1,7 @@
 package DAO;
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -20,40 +21,40 @@ public class ManagerDAO {
 	}
 
 	//회원별 매출 DAO - 승희
-	public List<Payment> sales() throws SQLException {
-		Connection connection = OracleUtility.getConnection();
-		List<Payment> saleslist = new ArrayList<>();
-		
-		String sql = "SELECT * FROM total_price";
-		try(
-				PreparedStatement ps = connection.prepareStatement(sql);
-				ResultSet rs = ps.executeQuery();
-				) {
-			while(rs.next()) {
-				int payment_id = rs.getInt(1);
-				String name = rs.getString(2);
-				String payment_day = rs.getString(3);
-				int money = rs.getInt(4);
-				String payment_method = rs.getString(5);
-				String car_no = rs.getString(6);
-				
-				Payment pay = Payment.builder()
-						.payment_id(payment_id)
-						.name(name)
-						.payment_day(payment_day)
-						.money(money)
-						.payment_method(payment_method)
-						.car_no(car_no)
-						.build();
-				
-				saleslist.add(pay);
-			}
+		public List<Payment> sales() throws SQLException {
+			Connection connection = OracleUtility.getConnection();
+			List<Payment> saleslist = new ArrayList<>();
 			
-		} catch (SQLException e) {
-			 e.printStackTrace();
+			String sql = "SELECT * FROM total_price";
+			try(
+					PreparedStatement ps = connection.prepareStatement(sql);
+					ResultSet rs = ps.executeQuery();
+					) {
+				while(rs.next()) {
+					int payment_id = rs.getInt(1);
+					String name = rs.getString(2);
+					Date payment_day = rs.getDate(3);
+					int money = rs.getInt(4);
+					String payment_method = rs.getString(5);
+					String car_no = rs.getString(6);
+					
+					Payment pay = Payment.builder()
+							.payment_id(payment_id)
+							.name(name)
+							.payment_day(payment_day)
+							.money(money)
+							.payment_method(payment_method)
+							.car_no(car_no)
+							.build();
+					
+					saleslist.add(pay);
+				}
+				
+			} catch (SQLException e) {
+				 e.printStackTrace();
+			}
+			return saleslist;
 		}
-		return saleslist;
-	}
 	
 	//예약 상태 조회 DAO - 승희 
 	public List<Car_Superintend> status() throws SQLException{
