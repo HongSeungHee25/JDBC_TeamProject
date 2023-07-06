@@ -13,7 +13,7 @@ insert into car_inspection values ('124호 5713', '브레이크 패드', '2023-0
 insert into car_inspection values ('124호 5714', '엔진오일', '2023-06-20', '2024-04-24');
 insert into car_inspection values ('114하 9280', '브레이크 오일', '2022-11-20', '2023-10-29');
 insert into car_inspection values ('114하 9281', '타이어', '2022-11-20', '2023-10-29');
-insert into car_inspection values ('150하 6773', '브레이크 오일', '2022-11-20', '2023-10-29');
+insert into car_inspection values ('150하 6773', '브레이크 오일', '2022-11-20', '2023-10-29'); 
 insert into car_inspection values ('150하 6774', '브레이크 패드', '2022-11-20', '2023-10-29');
 
 
