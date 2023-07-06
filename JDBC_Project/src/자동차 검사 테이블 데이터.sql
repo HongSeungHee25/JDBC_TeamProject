@@ -17,6 +17,6 @@ insert into car_inspection values ('150하 6773', '브레이크 오일', '2022-1
 insert into car_inspection values ('150하 6774', '브레이크 패드', '2022-11-20', '2023-10-29');
 
 
-
+ 
 
 
