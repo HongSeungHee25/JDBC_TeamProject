@@ -42,48 +42,49 @@ public class CustomerDAO {
 	}
 	
 	//회원) 회원가입 DAO - 승희
-	public void join(Customer dto)throws SQLException{
-		Connection connection = OracleUtility.getConnection();
-		String sql = "insert into customer values(?,?,?,?,?)";
-		
-		PreparedStatement ps = connection.prepareStatement(sql);
-		
-		ps.setString(1, dto.getCustomer_id());
-		ps.setString(2, dto.getPw());
-		ps.setString(3, dto.getName());
-		ps.setString(4, dto.getPhone());
-		ps.setString(5, dto.getLicence());
-		
-		ps.execute();
-		
-		connection.close();
-		ps.close();
-	}
+		public boolean join(Customer dto)throws SQLException{
+			Connection connection = OracleUtility.getConnection();
+			String sql = "insert into customer values(?,?,?,?,?)";
+			
+			PreparedStatement ps = connection.prepareStatement(sql);
+			
+			ps.setString(1, dto.getName());
+			ps.setString(2, dto.getCustomer_id());
+			ps.setString(3, dto.getPw());
+			ps.setString(4, dto.getPhone());
+			ps.setString(5, dto.getLicence());
+			
+			int result = ps.executeUpdate();
+			
+			connection.close();
+			ps.close();
+			return result > 0;
+		}
 		//관리자) 회원 조회 DAO - 병인
-		public List<Customer> selectAll() throws SQLException{
-		      Connection conn = OracleUtility.getConnection();
-		      String select = "select * from car_rent";
-		      PreparedStatement ps = conn.prepareStatement(select);
-		      ResultSet rs = ps.executeQuery();
-		      List<Customer> list = new ArrayList<>();
-		      while(rs.next()) {
-		    	  list.add(new Customer(rs.getString(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5)));
-		      }
-		      return list;
-		}
-		
-		//관리자) 회원 이름으로 조회 DAO - 병인
-		public Customer selectByName(String name) throws SQLException{
-		      Connection conn = OracleUtility.getConnection();
-		      String select = "select * from Customer where name = ?";
-		      PreparedStatement ps = conn.prepareStatement(select);
-		      ps.setString(1, name);
-		      ResultSet rs = ps.executeQuery();
-		      Customer cs = null;
-		      if(rs.next()) {
-		    	  cs = new Customer(rs.getString(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5));
-		      }
-		      return cs;
-		}
+				public List<Customer> selectAll() throws SQLException{
+				      Connection conn = OracleUtility.getConnection();
+				      String select = "select * from car_rent";
+				      PreparedStatement ps = conn.prepareStatement(select);
+				      ResultSet rs = ps.executeQuery();
+				      List<Customer> list = new ArrayList<>();
+				      while(rs.next()) {
+				    	  list.add(new Customer(rs.getString(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5)));
+				      }
+				      return list;
+				}
+				
+				//관리자) 회원 이름으로 조회 DAO - 병인
+				public Customer selectByName(String name) throws SQLException{
+				      Connection conn = OracleUtility.getConnection();
+				      String select = "select * from Customer where name = ?";
+				      PreparedStatement ps = conn.prepareStatement(select);
+				      ps.setString(1, name);
+				      ResultSet rs = ps.executeQuery();
+				      Customer cs = null;
+				      if(rs.next()) {
+				    	  cs = new Customer(rs.getString(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5));
+				      }
+				      return cs;
+				}
 	
 }
