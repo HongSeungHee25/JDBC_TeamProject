@@ -47,17 +47,17 @@ public class CarRentDAO {
 			   }
 			   return cr;
 			}
+		
 	public int insertReserve(Car_rent data) throws SQLException{
 		Connection conn = OracleUtility.getConnection();
 		String select = "insert into car_rent "
-				+ "values(?,?,?,?,?)";
+				+ "values(?,?,?,?)";
 		PreparedStatement ps = conn.prepareStatement(select);
-		Car_rent cr = null;
-		ps.setInt(1, cr.getRent_no());
-		ps.setString(2, cr.getName());
-		ps.setString(3, cr.getCar_no());
-		ps.setDate(4, cr.getRent_start());
-		ps.setDate(5, cr.getRent_end());
+		
+		ps.setString(1, data.getName());
+		ps.setString(2, data.getCar_no());
+		ps.setDate(2, data.getRent_start());
+		ps.setDate(3, data.getRent_end());
 		
 		
 		int result = ps.executeUpdate();
