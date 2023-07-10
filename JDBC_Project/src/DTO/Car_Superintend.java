@@ -1,6 +1,7 @@
 package DTO;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -9,6 +10,7 @@ import lombok.ToString;
 @AllArgsConstructor
 @ToString
 @Setter
+@Builder
 public class Car_Superintend {
 	//자동차 관리 DTO - 진만
 	private String car_no;
