@@ -63,7 +63,7 @@ public class CustomerDAO {
 		//관리자) 회원 조회 DAO - 병인
 				public List<Customer> selectAll() throws SQLException{
 				      Connection conn = OracleUtility.getConnection();
-				      String select = "select * from car_rent";
+				      String select = "select * from customer";
 				      PreparedStatement ps = conn.prepareStatement(select);
 				      ResultSet rs = ps.executeQuery();
 				      List<Customer> list = new ArrayList<>();
