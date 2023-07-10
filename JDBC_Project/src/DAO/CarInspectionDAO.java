@@ -21,7 +21,7 @@ public class CarInspectionDAO {
 	//자동차 검사 조회 DAO - 병인
 		public List<Car_Inspection> selectAll() throws SQLException{
 		      Connection conn = OracleUtility.getConnection();
-		      String select = "select * from car_inspection";
+		      String select = "select * from car_inspection order by Next_date";
 		      PreparedStatement ps = conn.prepareStatement(select);
 		      ResultSet rs = ps.executeQuery();
 		      List<Car_Inspection> list = new ArrayList<>();
