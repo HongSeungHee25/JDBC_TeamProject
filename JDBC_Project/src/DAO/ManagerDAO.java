@@ -111,6 +111,25 @@ public class ManagerDAO {
 				return total;
 	}
 	
+	//차량 등록
+	public boolean car_insert(Car_Superintend dto)throws SQLException{
+		Connection connection = OracleUtility.getConnection();
+		String sql ="insert into car values(?,?,?,null,?,?,?)";
+		PreparedStatement ps = connection.prepareStatement(sql);
+		
+		ps.setString(1, dto.getCar_no());
+		ps.setString(2, dto.getCar_garde());
+		ps.setString(3, dto.getCarType());
+		ps.setInt(4, dto.getPrice());
+		ps.setInt(5, dto.getInsurance());
+		ps.setString(6, dto.getPL());
+		
+		int result = ps.executeUpdate();
+		
+		connection.close();
+		ps.close();
+		return result > 0;
+	}
 	
 	
 	
