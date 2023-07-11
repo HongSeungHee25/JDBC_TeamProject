@@ -14,5 +14,5 @@ insert into payment values (payment_id_seq.nextval, '한빈', 10, '2023-02-21', 
 -- 결제관리 id 시퀀스
 DROP SEQUENCE payment_id_seq;
 CREATE SEQUENCE payment_id_seq
-	START WITH 11;
+	START WITH 11; 
 
