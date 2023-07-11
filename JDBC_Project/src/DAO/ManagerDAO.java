@@ -8,6 +8,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import DTO.Car_Inspection;
 import DTO.Car_Superintend;
 import DTO.Month_total;
 import DTO.Payment;
@@ -25,7 +26,10 @@ public class ManagerDAO {
 			Connection connection = OracleUtility.getConnection();
 			List<Payment> saleslist = new ArrayList<>();
 			
-			String sql = "SELECT * FROM total_price";
+			String sql = "SELECT p.payment_id, p.name, p.payment_day, c.PRICE + c.INSURANCE AS money, p.PAYMENT_METHOD ,p.car_no\r\n"
+					+ "FROM PAYMENT p JOIN CAR c \r\n"
+					+ "ON p.car_no = c.CAR_NO \r\n"
+					+ "ORDER BY p.PAYMENT_ID ";
 			try(
 					PreparedStatement ps = connection.prepareStatement(sql);
 					ResultSet rs = ps.executeQuery();
@@ -84,7 +88,12 @@ public class ManagerDAO {
 	public List<Month_total> month_total() throws SQLException{
 		Connection connection = OracleUtility.getConnection();
 		
-		String sql = "SELECT * FROM month_total";
+		String sql = "SELECT to_char(payment_day,'yyyy-mm') AS months, PAYMENT_METHOD, sum(money) AS total\r\n"
+				+ "FROM (SELECT p.payment_id, p.name, p.payment_day, c.PRICE + c.INSURANCE AS money, p.PAYMENT_METHOD ,p.car_no\r\n"
+				+ "		FROM PAYMENT p JOIN CAR c \r\n"
+				+ "		ON p.car_no = c.CAR_NO)\r\n"
+				+ "GROUP BY to_char(payment_day,'yyyy-mm'),PAYMENT_METHOD\r\n"
+				+ "ORDER BY months desc";
 		
 		PreparedStatement ps = connection.prepareStatement(sql);
 		
@@ -130,7 +139,24 @@ public class ManagerDAO {
 		ps.close();
 		return result > 0;
 	}
-	
+	// 자동차 검사 등록 DAO - 승희
+	public boolean insertInspection(Car_Inspection car) throws SQLException {
+	    Connection conn = OracleUtility.getConnection();
+	    String select = "INSERT INTO car_inspection VALUES (?, ?, ?, ?)";
+	    PreparedStatement ps = conn.prepareStatement(select);
+	    
+	    ps.setString(1, car.getCar_no());
+	    ps.setString(2, car.getInspection_type());
+	    ps.setString(3, car.getLast_date());
+	    ps.setString(4, car.getNext_date());
+	    
+	    int result = ps.executeUpdate();
+	    
+	    conn.close();
+	    ps.close();
+	    
+	    return result > 0;
+	}
 	
 	
 }
