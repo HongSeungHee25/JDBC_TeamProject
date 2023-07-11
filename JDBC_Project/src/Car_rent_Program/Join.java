@@ -20,7 +20,8 @@ import javax.swing.JTextField;
 import DAO.CustomerDAO;
 import DTO.Customer;
 
-//회원 가입
+//회원 가입 화면 구현 - 종화
+//회원 가입 JDBC 연결(Insert) - 승희
 @SuppressWarnings("serial")
 public class Join extends JFrame {
 	
