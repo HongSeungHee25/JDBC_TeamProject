@@ -14,16 +14,6 @@ FROM PAYMENT p JOIN CAR c
 ON p.car_no = c.CAR_NO 
 ORDER BY p.PAYMENT_ID ;
 
--- 총 토탈 가격 테이블
-CREATE TABLE TOTAL_PRICE 
-AS 
-SELECT p.payment_id, p.name, p.payment_day, c.PRICE + c.INSURANCE AS money, p.PAYMENT_METHOD ,p.car_no
-FROM PAYMENT p JOIN CAR c 
-ON p.car_no = c.CAR_NO 
-ORDER BY p.PAYMENT_ID ;
-
-SELECT * FROM TOTAL_PRICE;
-
 -- 월 별 매출 조회
 SELECT to_char(payment_day,'yyyy-mm') AS months, PAYMENT_METHOD, sum(money) AS total
 FROM (SELECT p.payment_id, p.name, p.payment_day, c.PRICE + c.INSURANCE AS money, p.PAYMENT_METHOD ,p.car_no
@@ -32,31 +22,4 @@ FROM (SELECT p.payment_id, p.name, p.payment_day, c.PRICE + c.INSURANCE AS money
 GROUP BY to_char(payment_day,'yyyy-mm'),PAYMENT_METHOD
 ORDER BY months;
 
--- 월별 토탈 가격 테이블
-CREATE TABLE month_total 
-AS 
-SELECT to_char(payment_day,'yyyy-mm') AS months, PAYMENT_METHOD, sum(money) AS total
-FROM (SELECT p.payment_id, p.name, p.payment_day, c.PRICE + c.INSURANCE AS money, p.PAYMENT_METHOD ,p.car_no
-		FROM PAYMENT p JOIN CAR c 
-		ON p.car_no = c.CAR_NO)
-GROUP BY to_char(payment_day,'yyyy-mm'),PAYMENT_METHOD
-ORDER BY months;
-
-SELECT * FROM month_total;
-
--- 결제 화면 
-SELECT cr.RENT_START , cr.RENT_END ,c.PRICE  + c.INSURANCE AS money ,p.PAYMENT_METHOD 
-FROM CAR_RENT cr JOIN PAYMENT p 
-ON cr.RENT_NO = p.RENT_NO 
-JOIN CAR c ON c.CAR_NO = p.CAR_NO ;
-
--- 결제 화면 테이블 생성
-CREATE TABLE price_screen
-AS 
-SELECT cr.RENT_START , cr.RENT_END ,c.PRICE  + c.INSURANCE AS money ,p.PAYMENT_METHOD 
-FROM CAR_RENT cr JOIN PAYMENT p 
-ON cr.RENT_NO = p.RENT_NO 
-JOIN CAR c ON c.CAR_NO = p.CAR_NO;
-
-SELECT * FROM PRICE_SCREEN ;
 
