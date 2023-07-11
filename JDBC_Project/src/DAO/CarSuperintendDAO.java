@@ -19,20 +19,21 @@ public class CarSuperintendDAO {
 		return superintendDAO;
 	}
 	
-	//자동차 정보 조회 DAO - 병인
-		public List<Car_Superintend> selectAll() throws SQLException{
+	// 차량 이름으로 행 조회 - 병인
+		public Car_Superintend selectByNO(String car_type) throws SQLException{
 		      Connection conn = OracleUtility.getConnection();
-		      String select = "select * from car";
+		      String select = "select * from car where car_type = ?";
 		      PreparedStatement ps = conn.prepareStatement(select);
+		      ps.setString(1, car_type);
 		      ResultSet rs = ps.executeQuery();
-		      List<Car_Superintend> list = new ArrayList<>();
-		      while(rs.next()) {
-		    	  list.add(new Car_Superintend(rs.getString(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getInt(5), rs.getInt(6), rs.getString(7)));
+		      Car_Superintend car = null;
+		      if(rs.next()) {
+		    	  car = new Car_Superintend(rs.getString(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getInt(5), rs.getInt(6), rs.getString(7));
 		      }
 		      conn.close();
 		      ps.close();
 		      rs.close();
-		      return list;
+		      return car;
 		}
 		
 		//자동차 정보 DAO - 승희
