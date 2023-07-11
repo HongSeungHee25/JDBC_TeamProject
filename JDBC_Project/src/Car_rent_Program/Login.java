@@ -28,7 +28,7 @@ import gui.Choicecar_1;
 @SuppressWarnings("serial")
 public class Login extends JFrame {
 
-	Customer customer;
+	Customer customer; 
 	private JScrollPane jScrollPane;
     private ImageIcon icon;
     private JLabel label;
