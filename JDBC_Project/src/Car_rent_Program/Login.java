@@ -21,12 +21,14 @@ import javax.swing.SwingUtilities;
 
 import DAO.CustomerDAO;
 import DTO.Customer;
+import gui.Choicecar_1;
 
-//로그인
+//로그인 화면 구현 - 승희
+//로그인 JDBC 연결 - 병인
 @SuppressWarnings("serial")
 public class Login extends JFrame {
 
-	
+	Customer customer;
 	private JScrollPane jScrollPane;
     private ImageIcon icon;
     private JLabel label;
@@ -34,6 +36,8 @@ public class Login extends JFrame {
     private JButton loginButton;
     private JButton joinButton;
     private JButton Managerbutton;
+    
+	String loggedInUserName;
 
     public Login() {
     	setTitle("렌트가 예약 프로그램");
@@ -95,19 +99,21 @@ public class Login extends JFrame {
                 String id = textField.getText();
                 String password = new String(passwordField.getPassword());
                 try {
-                    Customer customer = CustomerDAO.getCustomerDAO().login(id, password);
+                    customer = CustomerDAO.getCustomerDAO().login(id, password);
                     if (customer != null) {
-                        // 로그인 성공 시 실행할 코드 작성
-                        JOptionPane.showMessageDialog(null, "로그인 성공! 확인 버튼을 누르면 차량 등급을 선택합니다.");
+                    	// 로그인 성공 시 실행할 코드 작성
+                    	DataHolder.loggedInUserName = customer.getName();
+                    	JOptionPane.showMessageDialog(null, "로그인 성공! "+ customer.getName()+" 님 환영합니다.\n확인 버튼을 누르면 차량 등급을 선택합니다.");
 
-                        // 차량 등급 패널로 이동
-                        openChoiceCarType();
+                    	// 차량 등급 패널로 이동
+                        openChoiceCarType(customer.getName()); // Pass the loggedInUserName
+
 
                         // 현재 로그인 창 닫기
                         dispose();
                     } else {
                         // 로그인 실패 시 실행할 코드 작성
-                        JOptionPane.showMessageDialog(null, "아이디와 비밀번호를 입력해주세요.");
+                        JOptionPane.showMessageDialog(null, "아이디와 비밀번호를 일치하지 않습니다.");
                     }
                 } catch (SQLException ex) {
                     ex.printStackTrace();
@@ -153,11 +159,13 @@ public class Login extends JFrame {
     }
     
  // 차량 선택 화면으로 이동
-    private void openChoiceCarType() {
-        Choicecar choicecar1 = new Choicecar();
-        choicecar1.setVisible(true);
-        Choicecar.main(null);
-    }
+ protected void openChoiceCarType(String name) throws SQLException {
+
+	 Choicecar choicecar =  new Choicecar(name); // 여기서 생성자 한 번 호출 
+     choicecar.setVisible(true);
+     //choicecar.main(null);		// 여기서 choicecar 클래스 내부 메인 한 번 호출.
+		
+	}
     
     private void openManagerScreen() {
         SwingUtilities.invokeLater(() -> {
@@ -183,4 +191,10 @@ public class Login extends JFrame {
             }
         });
     }
+
+public class DataHolder {
+    public static String loggedInUserName;  // 전역 변수로 사용자 이름 저장
+
+    // ... 추가 필요한 데이터 저장
+}
 }
