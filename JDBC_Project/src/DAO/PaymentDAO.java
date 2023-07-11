@@ -7,6 +7,9 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.JOptionPane;
+
+import DTO.Car_rent;
 import DTO.Payment;
 
 
@@ -47,5 +50,44 @@ public class PaymentDAO {
 		      }
 		      return pm;
 		}
+		
+		// 결제정보 데이터 insert DAO - 병인
+				public int insertPayment(Payment data) throws SQLException{
+					Connection conn = OracleUtility.getConnection();
+					String select = "insert into payment "
+							+ "values(payment_id_seq.nextval,?,?,sysdate,?,?,?)";
+					PreparedStatement ps = conn.prepareStatement(select);
+					
+					ps.setString(1, data.getName());
+					ps.setInt(2, data.getRent_no());
+					ps.setInt(3, data.getMoney());
+					ps.setString(4, data.getPayment_method());
+					ps.setString(5, data.getCar_no());
+					
+					
+					int result = ps.executeUpdate();
+					
+					conn.close();
+					ps.close();
+					return result;
+				}
+		
+		    
+		    
+		public int getLatestRentNo() throws SQLException {
+		    Connection connection = OracleUtility.getConnection();
+		    String query = "SELECT MAX(rent_no) AS max_rent_no FROM car_rent";
+		    PreparedStatement preparedStatement = connection.prepareStatement(query);
+		    ResultSet resultSet = preparedStatement.executeQuery();
+
+		    int rentNo = 0;
+
+		        if (resultSet.next()) {
+		            rentNo = resultSet.getInt("max_rent_no");
+		        }
+
+		    return rentNo;
+		}
+
 	
 }
