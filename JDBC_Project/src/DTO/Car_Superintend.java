@@ -12,6 +12,9 @@ import lombok.ToString;
 @Setter
 @Builder
 public class Car_Superintend {
+	public Car_Superintend() {
+		// TODO Auto-generated constructor stub
+	}
 	//자동차 관리 DTO - 진만
 	private String car_no;
 	private String car_garde;
