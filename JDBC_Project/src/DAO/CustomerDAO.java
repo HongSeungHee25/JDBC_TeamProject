@@ -8,6 +8,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import DTO.Customer;
+import DTO.Reservation;
+import oracle.sql.ORAData;
 
 public class CustomerDAO {
 	
@@ -86,5 +88,68 @@ public class CustomerDAO {
 				      }
 				      return cs;
 				}
-	
+				public int customerUpdate(Customer customer) throws SQLException{
+					Connection connection = OracleUtility.getConnection();
+					String sql = "UPDATE customer SET customer_id = ?, pw = ?, phone = ? WHERE name = ?";
+					PreparedStatement ps = connection.prepareStatement(sql);
+					ps.setString(1, customer.getCustomer_id());
+					ps.setString(2, customer.getPw());
+					ps.setString(3, customer.getPhone());
+					ps.setString(4, customer.getName());
+					
+					int result = ps.executeUpdate();
+					
+					return result;
+				}
+				
+				//회원 로그인해서 예약 내역 조회하기 DAO
+				public List<Reservation> getReservationsByCustomer(String name) throws SQLException {
+				    List<Reservation> reservations = new ArrayList<>();
+				    
+				    Connection connection = OracleUtility.getConnection();
+				    String sql = "SELECT " +
+				            "c.CAR_NO, " +
+				            "c.CAR_TYPE, " +
+				            "TO_CHAR(cr.RENT_START, 'yyyy-mm-dd') AS RENT_START, " +
+				            "TO_CHAR(cr.RENT_END, 'yyyy-mm-dd') AS RENT_END, " +
+				            "p.PAYMENT_METHOD, " +
+				            "c.PRICE + c.INSURANCE AS money " +
+				            "FROM " +
+				            "CAR c " +
+				            "JOIN CAR_RENT cr ON c.CAR_NO = cr.CAR_NO " +
+				            "JOIN PAYMENT p ON c.CAR_NO = p.CAR_NO " +
+				            "WHERE " +
+				            "cr.NAME = ? " +
+				            "ORDER BY RENT_START";
+				    
+				    PreparedStatement ps = connection.prepareStatement(sql);
+				    ps.setString(1, name);
+				    
+				    ResultSet rs = ps.executeQuery();
+				    
+				    while (rs.next()) {
+				        String carNo = rs.getString("CAR_NO");
+				        String carType = rs.getString("CAR_TYPE");
+				        String rentStart = rs.getString("RENT_START");
+				        String rentEnd = rs.getString("RENT_END");
+				        String paymentMethod = rs.getString("PAYMENT_METHOD");
+				        int money = rs.getInt("money");
+				        
+				        Reservation reservation = new Reservation(carNo, carType, rentStart, rentEnd, paymentMethod, money);
+				        reservations.add(reservation);
+				    }
+				    
+				    rs.close();
+				    ps.close();
+				    connection.close();
+				    
+				    return reservations;
+				}
+
+
+				
+				
+				
+				
+				
 }
