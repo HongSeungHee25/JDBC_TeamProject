@@ -147,8 +147,8 @@ public class ManagerDAO {
 	    
 	    ps.setString(1, car.getCar_no());
 	    ps.setString(2, car.getInspection_type());
-	    ps.setString(3, car.getLast_date());
-	    ps.setString(4, car.getNext_date());
+	    ps.setDate(3, car.getLast_date());
+	    ps.setDate(4, car.getNext_date());
 	    
 	    int result = ps.executeUpdate();
 	    
