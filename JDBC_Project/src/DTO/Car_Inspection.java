@@ -17,6 +17,6 @@ public class Car_Inspection {
 //자동차 검사 DTO - 진만
 	private String car_no;
 	private String inspection_type;
-	private String Last_date;
-	private String Next_date;
+	private Date Last_date;
+	private Date Next_date;
 }
