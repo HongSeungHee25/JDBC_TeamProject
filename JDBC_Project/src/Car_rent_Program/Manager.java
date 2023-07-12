@@ -16,6 +16,7 @@ import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.sql.Date;
 import java.sql.SQLException;
+import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -148,7 +149,7 @@ public class Manager extends JPanel {
         customer_jtf.setFont(new Font("맑은 고딕", Font.PLAIN, 18));
         customer_jtf.setBounds(120, 10, 400, 40); // 텍스트 입력창 크기
 
-        String[] customer_temp = { "회원 이름","회원 ID","회원 PW","전화번호","면허증 여부"};
+        String[] customer_temp = {"회원 이름"};
         JComboBox<String> customer_jc = new JComboBox<>(customer_temp); // 선택항목
         customer_jc.setFont(new Font("맑은 고딕", Font.BOLD, 18));
         customer_jc.setBounds(550, 10, 120, 40); // 선택항목 크기
@@ -205,7 +206,7 @@ public class Manager extends JPanel {
         customer_price_jtf.setFont(new Font("맑은 고딕", Font.PLAIN, 18));
         customer_price_jtf.setBounds(120, 10, 400, 40); // 텍스트 입력창 크기
 
-        String[] customer_price_temp = { "순서", "회원 이름", "결제 날짜", "결제 요금", "결제 방법", "차량 번호" };
+        String[] customer_price_temp = {  "회원 이름", "결제 방법"};
         JComboBox<String> customer_price_jc = new JComboBox<>(customer_price_temp); // 선택항목
         customer_price_jc.setFont(new Font("맑은 고딕", Font.BOLD, 18));
         customer_price_jc.setBounds(550, 10, 120, 40); // 선택항목 크기
@@ -261,7 +262,7 @@ public class Manager extends JPanel {
         car_rent_jtf.setFont(new Font("맑은 고딕", Font.PLAIN, 18));
         car_rent_jtf.setBounds(120, 10, 400, 40); // 텍스트 입력창 크기
 
-        String[] car_rent_temp = { "차량 번호", "차량 등급", "차량 종류", "예약 상태", "대여 요금", "보험료(자차)", "연료" };
+        String[] car_rent_temp = { "차량 등급", "차량 종류", "예약 상태"};
         JComboBox<String> car_rent_jc = new JComboBox<>(car_rent_temp); // 선택항목
         car_rent_jc.setFont(new Font("맑은 고딕", Font.BOLD, 18));
         car_rent_jc.setBounds(550, 10, 120, 40); // 선택항목 크기
@@ -317,7 +318,7 @@ public class Manager extends JPanel {
         price_jtf.setFont(new Font("맑은 고딕", Font.PLAIN, 18));
         price_jtf.setBounds(120, 10, 400, 40); // 텍스트 입력창 크기
 
-        String[] price_temp = { "날짜", "결제 방법", "금액" };
+        String[] price_temp = {"결제 방법"};
         JComboBox<String> price_jc = new JComboBox<>(price_temp); // 선택항목
         price_jc.setFont(new Font("맑은 고딕", Font.BOLD, 18));
         price_jc.setBounds(550, 10, 120, 40); // 선택항목 크기
@@ -373,7 +374,7 @@ public class Manager extends JPanel {
         Car_Inspection_jtf.setFont(new Font("맑은 고딕", Font.PLAIN, 18));
         Car_Inspection_jtf.setBounds(120, 10, 400, 40); // 텍스트 입력창 크기
 
-        String[] Car_Inspection_temp = { "차량 번호", "검사 종류", "마지막 검사날짜", "다음 검사날짜" };
+        String[] Car_Inspection_temp = {"검사 종류" };
         JComboBox<String> Car_Inspection_jc = new JComboBox<>(Car_Inspection_temp); // 선택항목
         Car_Inspection_jc.setFont(new Font("맑은 고딕", Font.BOLD, 18));
         Car_Inspection_jc.setBounds(550, 10, 120, 40); // 선택항목 크기
@@ -594,12 +595,12 @@ public class Manager extends JPanel {
                     SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
                     java.util.Date last_date = dateFormat.parse(last_date_textField.getText());
                     java.util.Date next_date = dateFormat.parse(next_date_textField.getText());
-
+                    
                     Car_Inspection car = Car_Inspection.builder()
                         .car_no(car_inspection_no_textField.getText())
                         .inspection_type(car_inspection_textField.getText())
-                        .Last_date(dateFormat.format(last_date))
-                        .Next_date(dateFormat.format(next_date))
+                        .Last_date((Date)last_date)
+                        .Next_date((Date)next_date)
                         .build();
 
                     if(ManagerDAO.getManagerDAO().insertInspection(car)) {
@@ -615,11 +616,8 @@ public class Manager extends JPanel {
             }
         });
 
-
         add(tabbedPane, BorderLayout.CENTER);
     }
-    
-	
 		
     private Car_Superintend car() {
         // 관리자가 입력한 세부 정보를 가져오고 차량 객체를 만듭니다.
@@ -640,18 +638,19 @@ public class Manager extends JPanel {
         		.build();
     }
 
-
 	//월 별 매출 데이터 보여주기
     public void price_displayAllData() {
         try {
             List<Month_total> monthTotalList = ManagerDAO.getManagerDAO().month_total();
             price_dm.setRowCount(0); // 기존 테이블 데이터 초기화
 
+            DecimalFormat formatter = new DecimalFormat("#,###,###,###");
+            
             for (Month_total mt : monthTotalList) {
                 String[] rowData = new String[3];
                 rowData[0] = mt.getMonths();
                 rowData[1] = mt.getPayment_method();
-                rowData[2] = String.valueOf(mt.getTotal());
+                rowData[2] = String.valueOf(formatter.format(mt.getTotal()));
                 price_dm.addRow(rowData);
             }
         } catch (SQLException e) {
@@ -661,22 +660,22 @@ public class Manager extends JPanel {
     //월 별 매출 검색해서 보기
     public void price_searchAndDisplayData(String find, String selectedOption) {
         try {
-            List<Month_total> monthTotalList = ManagerDAO.getManagerDAO().month_total();
+        	List<Month_total> monthTotalList = ManagerDAO.getManagerDAO().month_total();
             price_dm.setRowCount(0); // 기존 테이블 데이터 초기화
-
+            
+            DecimalFormat formatter = new DecimalFormat("#,###,###,###");
+            
+            
+            
             for (Month_total mt : monthTotalList) {
                 String[] rowData = new String[3];
                 rowData[0] = mt.getMonths();
                 rowData[1] = mt.getPayment_method();
-                rowData[2] = String.valueOf(mt.getTotal());
+                rowData[2] = String.valueOf(formatter.format(mt.getTotal()));
 
                 boolean isMatched = false; // 검색 결과 여부를 판단하는 변수
 
-                if (selectedOption.equals("날짜") && rowData[0].contains(find)) {
-                    isMatched = true;
-                } else if (selectedOption.equals("결제 방법") && rowData[1].contains(find)) {
-                    isMatched = true;
-                } else if (selectedOption.equals("금액") && rowData[2].contains(find)) {
+                if (selectedOption.equals("결제 방법") && rowData[1].contains(find)) {
                     isMatched = true;
                 }
 
@@ -688,14 +687,13 @@ public class Manager extends JPanel {
             e.printStackTrace();
         }
     }
-
     
   //자동차 검사 데이터 보여주기
     public void Car_Inspection_displayAllData() {
         try {
             List<Car_Inspection> monthTotalList = CarInspectionDAO.getCarInspectionDAO().selectAll();
             Car_Inspection_dm.setRowCount(0); // 기존 테이블 데이터 초기화
-
+            
             for (Car_Inspection mt : monthTotalList) {
                 String[] rowData = new String[4];
                 rowData[0] = mt.getCar_no();
@@ -729,11 +727,7 @@ public class Manager extends JPanel {
                     isMatched = true;
                 } else if (selectedOption.equals("검사 종류") && rowData[1].contains(find)) {
                     isMatched = true;
-                } else if (selectedOption.equals("마지막 검사날짜") && rowData[2].contains(find)) {
-                    isMatched = true;
-                }else if (selectedOption.equals("다음 검사날짜") && rowData[3].contains(find)) {
-                    isMatched = true;
-                }
+                } 
 
                 if (isMatched) {
                 	Car_Inspection_dm.addRow(rowData);
@@ -750,14 +744,16 @@ public class Manager extends JPanel {
             List<Car_Superintend> monthTotalList = ManagerDAO.getManagerDAO().status();
             car_rent_dm.setRowCount(0); // 기존 테이블 데이터 초기화
 
+            DecimalFormat formatter = new DecimalFormat("#,###,###,###");
+            
             for (Car_Superintend mt : monthTotalList) {
                 String[] rowData = new String[7];
                 rowData[0] = mt.getCar_no();
                 rowData[1] = mt.getCar_garde();
                 rowData[2] = mt.getCarType();
                 rowData[3] = mt.getRent_Type();
-                rowData[4] = String.valueOf(mt.getPrice());
-                rowData[5] = String.valueOf(mt.getInsurance());
+                rowData[4] = String.valueOf(formatter.format(mt.getPrice()));
+                rowData[5] = String.valueOf(formatter.format(mt.getInsurance()));
                 rowData[6] = mt.getPL();
                 car_rent_dm.addRow(rowData);
             }
@@ -771,31 +767,25 @@ public class Manager extends JPanel {
             List<Car_Superintend> monthTotalList = ManagerDAO.getManagerDAO().status();
             car_rent_dm.setRowCount(0); // 기존 테이블 데이터 초기화
 
+            DecimalFormat formatter = new DecimalFormat("#,###,###,###");
+            
             for (Car_Superintend mt : monthTotalList) {
                 String[] rowData = new String[7];
                 rowData[0] = mt.getCar_no();
                 rowData[1] = mt.getCar_garde();
                 rowData[2] = mt.getCarType();
                 rowData[3] = mt.getRent_Type();
-                rowData[4] = String.valueOf(mt.getPrice());
-                rowData[5] = String.valueOf(mt.getInsurance());
+                rowData[4] = String.valueOf(formatter.format(mt.getPrice()));
+                rowData[5] = String.valueOf(formatter.format(mt.getInsurance()));
                 rowData[6] = mt.getPL();
                 
                 boolean isMatched = false; // 검색 결과 여부를 판단하는 변수
 
-                if (selectedOption.equals("차량 번호") && rowData[0].contains(find)) {
-                	isMatched = true;
-                } else if (selectedOption.equals("차량 등급") && rowData[1].contains(find)) {
+                if (selectedOption.equals("차량 등급") && rowData[1].contains(find)) {
                 	isMatched = true;
                 } else if (selectedOption.equals("차량 종류") && rowData[2].contains(find)) {
                 	isMatched = true;
                 } else if (selectedOption.equals("예약 상태") && rowData[3].contains(find)) {
-                	isMatched = true;
-                }else if (selectedOption.equals("대여요금") && rowData[4].contains(find)) {
-                	isMatched = true;
-                }else if (selectedOption.equals("보험료(자차)") && rowData[5].contains(find)) {
-                	isMatched = true;
-                }else if (selectedOption.equals("연료") && rowData[6].contains(find)) {
                 	isMatched = true;
                 }
                 if (isMatched) {
@@ -806,7 +796,6 @@ public class Manager extends JPanel {
             e.printStackTrace();
         }
     }
-	
     
     //회원별 매출 보여주기
     public void customer_price_displayAllData() {
@@ -814,15 +803,18 @@ public class Manager extends JPanel {
             List<Payment> monthTotalList = ManagerDAO.getManagerDAO().sales();
             customer_price_dm.setRowCount(0); // 기존 테이블 데이터 초기화
 
+            DecimalFormat formatter = new DecimalFormat("#,###,###,###");
+            
             for (int i = 0; i < monthTotalList.size(); i++) {
                 Payment payment = monthTotalList.get(i);
                 String[] rowData = new String[6];
                 rowData[0] = String.valueOf(i+1);
                 rowData[1] = payment.getName();
                 rowData[2] = String.valueOf(payment.getPayment_day());
-                rowData[3] = String.valueOf(payment.getMoney());
+                rowData[3] = String.valueOf(formatter.format(payment.getMoney()));
                 rowData[4] = payment.getPayment_method();
                 rowData[5] = payment.getCar_no();
+                
                 customer_price_dm.addRow(rowData);
             }
         } catch (SQLException e) {
@@ -835,31 +827,25 @@ public class Manager extends JPanel {
             List<Payment> monthTotalList = ManagerDAO.getManagerDAO().sales();
             customer_price_dm.setRowCount(0); // 기존 테이블 데이터 초기화
 
+            DecimalFormat formatter = new DecimalFormat("#,###,###,###");
+            
             for (int i = 0; i < monthTotalList.size(); i++) {
                 Payment payment = monthTotalList.get(i);
                 String[] rowData = new String[6];
                 rowData[0] = String.valueOf(i+1);
                 rowData[1] = payment.getName();
                 rowData[2] = String.valueOf(payment.getPayment_day());
-                rowData[3] = String.valueOf(payment.getMoney());
+                rowData[3] = String.valueOf(formatter.format(payment.getMoney()));
                 rowData[4] = payment.getPayment_method();
                 rowData[5] = payment.getCar_no();
                 
                 boolean isMatched = false; // 검색 결과 여부를 판단하는 변수
 
-                if (selectedOption.equals("순서") && rowData[0].contains(find)) {
+                if (selectedOption.equals("회원 이름") && rowData[1].contains(find)) {
                 	isMatched = true;
-                } else if (selectedOption.equals("회원 이름") && rowData[1].contains(find)) {
+                } else if (selectedOption.equals("결제 방법") && rowData[4].contains(find)) {
                 	isMatched = true;
-                } else if (selectedOption.equals("결제 날짜") && rowData[2].contains(find)) {
-                	isMatched = true;
-                } else if (selectedOption.equals("결제 금액") && rowData[3].contains(find)) {
-                	isMatched = true;
-                }else if (selectedOption.equals("결제 방법") && rowData[4].contains(find)) {
-                	isMatched = true;
-                }else if (selectedOption.equals("차량 번호") && rowData[5].contains(find)) {
-                	isMatched = true;
-                }
+                } 
                 if (isMatched) {
                 	customer_price_dm.addRow(rowData);
                 }
@@ -875,7 +861,7 @@ public class Manager extends JPanel {
             List<Customer> customers = CustomerDAO.getCustomerDAO().selectAll();
             customer_dm.setRowCount(0); // 기존 테이블 데이터 초기화
 
-            for (int i = 0; i < customers.size(); i++) {
+            for (int i=0; i<customers.size(); i++) {
                 Customer cus = customers.get(i);
                 String[] rowData = new String[5];
                 rowData[0] = cus.getName();
@@ -903,21 +889,12 @@ public class Manager extends JPanel {
                 rowData[2] = cus.getPw();
                 rowData[3] = cus.getPhone();
                 rowData[4] = cus.getLicence();
-                customer_dm.addRow(rowData);
                 
                 boolean isMatched = false; // 검색 결과 여부를 판단하는 변수
 
                 if (selectedOption.equals("회원 이름") && rowData[0].contains(find)) {
                 	isMatched = true;
-                } else if (selectedOption.equals("회원 ID") && rowData[1].contains(find)) {
-                	isMatched = true;
-                } else if (selectedOption.equals("회원 PW") && rowData[2].contains(find)) {
-                	isMatched = true;
-                } else if (selectedOption.equals("전화번호") && rowData[3].contains(find)) {
-                	isMatched = true;
-                }else if (selectedOption.equals("면허증 여부") && rowData[4].contains(find)) {
-                	isMatched = true;
-                }
+                } 
                 if (isMatched) {
                 	customer_dm.addRow(rowData);
                 }
@@ -927,7 +904,6 @@ public class Manager extends JPanel {
         }
     }
     
-    
     //main
     public static void main(String[] args) {
 
@@ -935,7 +911,7 @@ public class Manager extends JPanel {
         JFrame frame = new JFrame("관리자 관리 창");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setResizable(false);
-        frame.setIconImage(Toolkit.getDefaultToolkit().getImage("C:\\Users\\82108\\OneDrive\\바탕 화면\\자동차 로고\\로그인Test.jpg"));
+        frame.setIconImage(Toolkit.getDefaultToolkit().getImage("C:/Users/82108/OneDrive/바탕 화면/자동차 로고/로그인Test.jpg"));
 
         // 패널 생성 및 프레임에 추가
         Manager manager = new Manager();
@@ -1155,6 +1131,11 @@ public class Manager extends JPanel {
 
 				});
 			}
+		}
+		private String priceLabel(int num) { 
+			DecimalFormat dc = new DecimalFormat("#,###,###,###");
+			String d = dc.format(num);
+			return d;
 		}
 
 		public void windowOpened(WindowEvent e) {
