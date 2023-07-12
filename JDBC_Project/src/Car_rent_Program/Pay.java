@@ -124,7 +124,6 @@ public class Pay extends JPanel {
 		    this.rentEndDate = null;    // rentEndDate 초기화
 		    this.name = na;
 		    initialize();
-		    System.out.println(name);
 		}
 
 	
@@ -290,7 +289,6 @@ public class Pay extends JPanel {
 	                    	CarRentDAO.getCarRentDAO().insertReserve(rent);
 
 	                    	Car_rent cr = CarRentDAO.getCarRentDAO().selectOne();
-	                    	System.out.println(cr);
 
 	                    	payment = Payment.builder()
 	                    	        .name(name)
@@ -299,7 +297,6 @@ public class Pay extends JPanel {
 	                    	        .payment_method((String) jc.getSelectedItem()) 
 	                    	        .car_no(selectedCar) // 선택한 차량의 car_no 설정
 	                    	        .build();
-	                    	System.out.println(payment);
 
 	                    	PaymentDAO.getPaymentDAO().insertPayment(payment);
 						} catch (SQLException e1) {
