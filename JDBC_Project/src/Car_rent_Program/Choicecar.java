@@ -161,7 +161,7 @@ public class Choicecar extends JPanel {
                 gbc.gridy++;
                 
                 
-                Map<JButton, Boolean> reservationStatusMap = new HashMap<>();
+                Map<JButton, Boolean> reservationStatusMap = new HashMap<>(); 
 
              // 자동차 선택 액션 리스너
              carButton.addActionListener(new ActionListener() {
