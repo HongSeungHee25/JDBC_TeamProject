@@ -33,6 +33,21 @@ public class CarRentDAO {
 		      }
 		      return list;
 		}
+		
+		public Car_rent selectByName(String name) throws SQLException{
+			   Connection conn = OracleUtility.getConnection();
+			   String select = "SELECT RENT_NO , name, CAR_NO ,TO_CHAR(RENT_START,'yyyy-mm-dd') AS rent_start,TO_CHAR(RENT_END,'yyyy-mm-dd') AS RENT_END  FROM CAR_RENT cr WHERE name = ? AND rownum = 1 ORDER BY RENT_NO DESC";
+			   PreparedStatement ps = conn.prepareStatement(select);
+			   ps.setString(1, name);
+			   ResultSet rs = ps.executeQuery();
+			   Car_rent cr = null;
+			   if(rs.next()) {
+			      
+			      cr = new Car_rent(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5));
+			   }
+			   
+			   return cr;
+			}
 	
 		// rent_no 가져오기 위한 가장 최근 데이터 저장값 불러오기 - 병인
 				public Car_rent selectOne() throws SQLException{
