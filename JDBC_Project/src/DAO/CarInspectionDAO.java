@@ -28,7 +28,7 @@ public class CarInspectionDAO {
 		      List<Car_Inspection> list = new ArrayList<>();
 		      while(rs.next()) {
 		         
-		         list.add(new Car_Inspection(rs.getString(1), rs.getString(2), rs.getString(3), rs.getString(4)));
+		         list.add(new Car_Inspection(rs.getString(1), rs.getString(2), rs.getDate(3), rs.getDate(4)));
 		      }
 		      
 		      return list;
@@ -44,7 +44,7 @@ public class CarInspectionDAO {
 		   Car_Inspection ci = null;
 		   if(rs.next()) {
 		      
-		      ci = new Car_Inspection(rs.getString(1), rs.getString(2), rs.getString(3), rs.getString(4));
+		      ci = new Car_Inspection(rs.getString(1), rs.getString(2), rs.getDate(3), rs.getDate(4));
 		   }
 		   return ci;
 		}
