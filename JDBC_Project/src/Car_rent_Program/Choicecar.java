@@ -12,6 +12,7 @@ import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.SQLException;
+import java.text.DecimalFormat;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -140,12 +141,16 @@ public class Choicecar extends JPanel {
                 gbc.anchor = GridBagConstraints.WEST;
                 carPanel.add(new JLabel(" "), gbc); // 간격을 위한 빈 JLabel
 
+                DecimalFormat formatter = new DecimalFormat("#,###,###,###");
+                String rentalFeeFormatted = formatter.format(Integer.parseInt(carInfo[1]));
+                String insuranceFeeFormatted = formatter.format(Integer.parseInt(carInfo[2]));
+                
                 gbc.gridx++;
                 gbc.anchor = GridBagConstraints.WEST;
                 JLabel carLabel = new JLabel(
                     "<html>차량 이름: " + carInfo[0] + "<br>" +
-                    "일일 대여료: " + carInfo[1] + "<br>" +
-                    "일일 보험료: " + carInfo[2] + "<br>" +
+                    "일일 대여료: " + rentalFeeFormatted + "<br>" +
+                    "일일 보험료: " + insuranceFeeFormatted + "<br>" +
                     "PL: " + carInfo[3] + "<br>" +
                     "차량 번호: " + carInfo[4] + "</html>"
                 );
