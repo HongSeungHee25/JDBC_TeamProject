@@ -16,7 +16,7 @@ DROP TABLE manager CASCADE CONSTRAINTS;
 CREATE TABLE car
 (
 	car_no varchar2(30) NOT NULL,
-	car_grade varchar2(10) NOT NULL,
+	car_grade varchar2(30) NOT NULL,
 	car_type varchar2(20) NOT NULL,
 	rent_Type varchar2(10),
 	price number NOT NULL,
