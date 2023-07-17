@@ -46,7 +46,7 @@ import DTO.Car_rent;
 import DTO.Payment;
 
 //결제 화면 구현 - 종화
-//결제 화면 JDBC 연결 - 병인
+//결제 화면 JDBC 연결 - 병인 
 @SuppressWarnings("serial")
 public class Pay extends JPanel {
 	
