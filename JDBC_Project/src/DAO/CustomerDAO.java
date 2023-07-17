@@ -8,8 +8,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import DTO.Customer;
+import DTO.CustomerServiceCenter;
 import DTO.Reservation;
-import oracle.sql.ORAData;
 
 public class CustomerDAO {
 	
@@ -145,10 +145,39 @@ public class CustomerDAO {
 				    
 				    return reservations;
 				}
-
-
 				
+				//회원) 고객센터 - 승희
+				public boolean service(CustomerServiceCenter dto)throws SQLException{
+					Connection connection = OracleUtility.getConnection();
+					String sql = "insert into CustomerServiceCenter values(service_seq.nextval,?,?,?,?)";
+					
+					PreparedStatement ps = connection.prepareStatement(sql);
+					
+					ps.setString(1, dto.getName());
+					ps.setString(2, dto.getCustomer_id());
+					ps.setString(3, dto.getPhone());
+					ps.setString(4, dto.getService());
+					
+					int result = ps.executeUpdate();
+					
+					connection.close();
+					ps.close();
+					return result > 0;
+				}
 				
+				//고객센터 접수 내역 답변 DAO - 승희
+				public CustomerServiceCenter service(String name) throws SQLException{
+				      Connection conn = OracleUtility.getConnection();
+				      String select = "SELECT SERVICE_NO,SERVICE FROM CUSTOMERSERVICECENTER c WHERE name = ?";
+				      PreparedStatement ps = conn.prepareStatement(select);
+				      ps.setString(1, name);
+				      ResultSet rs = ps.executeQuery();
+				      CustomerServiceCenter cs = null;
+				      if(rs.next()) {
+				    	  cs = new CustomerServiceCenter(rs.getString(1), rs.getString(2), rs.getString(3), rs.getString(4));
+				      }
+				      return cs;
+				}
 				
 				
 				
