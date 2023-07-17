@@ -15,6 +15,8 @@ insert into car_inspection values ('114하 9280', '브레이크 오일', '2022-1
 insert into car_inspection values ('114하 9281', '타이어', '2022-11-20', '2023-10-29');
 insert into car_inspection values ('150하 6773', '브레이크 오일', '2022-11-20', '2023-10-29'); 
 insert into car_inspection values ('150하 6774', '브레이크 패드', '2022-11-20', '2023-10-29');
+insert into car_inspection values ('162허 7353', '엔진오일', '2023-06-15', '2024-01-15');
+insert into car_inspection values ('162허 7354', '브레이크 패드', '2023-06-15', '2024-01-15');
 
 
  
