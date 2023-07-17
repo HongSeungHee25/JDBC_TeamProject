@@ -5,10 +5,12 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.Font;
+import java.awt.Graphics;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Image;
 import java.awt.Insets;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.SQLException;
@@ -32,22 +34,22 @@ import DAO.CarRentDAO;
 import DAO.CarSuperintendDAO;
 
 // 차량 선택 화면 구현 - 병인, 종화, 진만, 지수
-// 차량 선택 JDBC 연결(자동차 정보) - 승희
+// 차량 선택 JDBC 연결(자동차 정보) - 승희, 지수, 진만
 @SuppressWarnings("serial")
 public class Choicecar extends JPanel {
 	
-	 private String selectedCar;  // 선택한 차량 정보를 저장하기 위한 변수
-	 private int rentalFee;		// 선택한 차량의 일일 대여료를 저장하기 위한 변수
-	 private int insuranceFee;	//선택한 차량의 일일 보험료를 저장하기 위한 변수 
+	 private String selectedCar;  	// 선택한 차량 정보를 저장하기 위한 변수
+	 private int rentalFee;			// 선택한 차량의 일일 대여료를 저장하기 위한 변수
+	 private int insuranceFee;		// 선택한 차량의 일일 보험료를 저장하기 위한 변수 
 	 private String name;
-	 
+	 private Image backgroundImage; // 백그라운드 이미지를 저장할 변수
 	 
     public static void main(String[] args) {
         EventQueue.invokeLater(new Runnable() {
             public void run() {
                 try {
                     JFrame frame = new JFrame();
-                    frame.setTitle("렌트카 예약 프로그램");
+                    frame.setTitle("SOULCAR");
                     frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
                     frame.setSize(900, 800);
                     frame.setLocationRelativeTo(null);
@@ -70,7 +72,7 @@ public class Choicecar extends JPanel {
 
     public void initialize() throws SQLException {
     	JFrame frame = new JFrame();
-        frame.setTitle("렌트카 예약 프로그램");
+        frame.setTitle("SOULCAR");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(900, 800);
         frame.setLocationRelativeTo(null);
@@ -81,6 +83,9 @@ public class Choicecar extends JPanel {
     	
         setLayout(new BorderLayout());
         setPreferredSize(new Dimension(900, 800));
+        
+        // 이미지 파일을 로드하여 backgroundImage 변수에 저장
+        backgroundImage = Toolkit.getDefaultToolkit().getImage("./image/차량선택.jpg");
 
         // 탭 객체 생성 및 위치 지정
         JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
@@ -95,14 +100,24 @@ public class Choicecar extends JPanel {
             { "./image/2023 Morning.jpg", "./image/2023 Ray.jpg", "./image/2023 Spark.jpg", "./image/2023 Casper.jpg",  "./image/Add_image.jpg",  "./image/Add_image.jpg",  "./image/Add_image.jpg",  "./image/Add_image.jpg",  "./image/Add_image.jpg",  "./image/Add_image.jpg" },
             { "./image/2023 Kona.jpg", "./image/2023 Seltos.jpg", "./image/2023 K3.jpg", "./image/2023 Tivoli air.jpg", "./image/Add_image.jpg",  "./image/Add_image.jpg",  "./image/Add_image.jpg",  "./image/Add_image.jpg",  "./image/Add_image.jpg",  "./image/Add_image.jpg"  },
             { "./image/2023 Sonata.jpg", "./image/2023 K5.jpg", "./image/2023 Sportage.jpg", "./image/2023 Tucson.jpg", "./image/Add_image.jpg",  "./image/Add_image.jpg",  "./image/Add_image.jpg",  "./image/Add_image.jpg",  "./image/Add_image.jpg",  "./image/Add_image.jpg"  },
-            { "./image/2023 palisade.jpg", "./image/2023 Carnival.jpg", "./image/2023 Staria.jpg", "./image/Add_image.jpg","./image/Add_image.jpg",  "./image/Add_image.jpg",  "./image/Add_image.jpg",  "./image/Add_image.jpg",  "./image/Add_image.jpg",  "./image/Add_image.jpg" }
+            { "./image/2023 palisade.jpg", "./image/2023 Carnival.jpg", "./image/2023 Staria.jpg", "./image/Add_image.jpg","./image/Add_image.jpg",  "./image/Add_image.jpg",  "./image/Add_image.jpg",  "./image/Add_image.jpg",  "./image/Add_image.jpg",  "./image/Add_image.jpg" },
+            { "./image/2023 G90.png", "./image/2023 K9.jpg", "./image/Add_image.jpg", "./image/Add_image.jpg", "./image/Add_image.jpg", "./image/Add_image.jpg", "./image/Add_image.jpg", "./image/Add_image.jpg", "./image/Add_image.jpg", "./image/Add_image.jpg", "./image/Add_image.jpg"}
         };
 
         for (int gradeIndex = 0; gradeIndex < carGradeList.size(); gradeIndex++) {
             String grade = carGradeList.get(gradeIndex);
 
             // 탭 생성 및 설정
-            JPanel carPanel = new JPanel(new GridBagLayout());
+            JPanel carPanel = new JPanel(new GridBagLayout()){
+            	 @Override
+                 protected void paintComponent(Graphics g) {
+                     super.paintComponent(g);
+                     // 백그라운드 이미지 그리기
+                     g.drawImage(backgroundImage, 0, 0, getWidth(), getHeight(), this);
+                     
+                 }
+             };
+            
 
             // 차량 탭 패널에 스크롤 패널 생성
             JScrollPane carScrollPane = new JScrollPane(carPanel);
@@ -154,7 +169,8 @@ public class Choicecar extends JPanel {
                     "PL: " + carInfo[3] + "<br>" +
                     "차량 번호: " + carInfo[4] + "</html>"
                 );
-                carLabel.setFont(new Font("맑은 고딕", Font.BOLD, 15));
+                carLabel.setFont(new Font("맑은 고딕", Font.BOLD, 18));
+                carLabel.setForeground(new Color(255, 255, 255));
                 carPanel.add(carLabel, gbc);
 
                 gbc.gridx = 0;
@@ -222,5 +238,6 @@ public class Choicecar extends JPanel {
 
         add(tabbedPane, BorderLayout.CENTER);
     }
+    
 }
 
