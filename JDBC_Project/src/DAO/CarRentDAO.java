@@ -7,10 +7,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import DTO.Car_Superintend;
 import DTO.Car_rent;
-
-
 
 
 public class CarRentDAO {
