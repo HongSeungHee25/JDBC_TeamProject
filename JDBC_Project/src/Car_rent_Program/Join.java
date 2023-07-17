@@ -3,6 +3,7 @@ package Car_rent_Program;
 
 import java.awt.Font;
 import java.awt.Graphics;
+import java.awt.Image;
 import java.awt.Toolkit;
 import java.sql.SQLException;
 
@@ -19,6 +20,7 @@ import javax.swing.JTextField;
 
 import DAO.CustomerDAO;
 import DTO.Customer;
+import java.awt.Color;
 
 //회원 가입 화면 구현 - 종화
 //회원 가입 JDBC 연결(Insert) - 승희
@@ -38,87 +40,95 @@ public class Join extends JFrame {
     private JButton joinbutton;
     private JButton cancelButton;
     private JScrollPane jScrollPane;
-    private ImageIcon icon;
+    
+    ImageIcon gifIcon;
 
     public Join() {
-    	setIconImage(Toolkit.getDefaultToolkit().getImage("C:\\Users\\82108\\OneDrive\\바탕 화면\\자동차 로고\\로그인Test.jpg"));
+    	setIconImage(Toolkit.getDefaultToolkit().getImage("./image/차량선택 백그라운드.jpg")); // 프로젝트 내부 경로로 변경
     	setTitle("회원 가입");
     	setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     	setSize(700, 600);
         setLocationRelativeTo(null);
 
-        icon = new ImageIcon("./image/회원가입.jpg");
+        gifIcon = new ImageIcon("./image/소울카회원가입GIF.gif"); // GIF 이미지 파일 경로로 변경
+
         
         JPanel back = new JPanel() {
             public void paintComponent(Graphics g) {
-                g.drawImage(icon.getImage(), 0, 0, null);
-                setOpaque(false);
                 super.paintComponent(g);
+                Image image = gifIcon.getImage();
+                g.drawImage(image, 0, 0, getWidth(), getHeight(), this);
             }
         };
-        
+
         back.setLayout(null);
+        setContentPane(back);
         
         label = new JLabel("회원 이름 : ");
-        label.setFont(new Font("휴먼둥근헤드라인", Font.PLAIN, 13));
-        label.setBounds(150, 100, 80, 30);
+        label.setForeground(new Color(255, 255, 255));
+        label.setFont(new Font("휴먼둥근헤드라인", Font.PLAIN, 15));
+        label.setBounds(150, 130, 100, 30);
         label.setHorizontalAlignment(JLabel.CENTER);
         back.add(label);
 
         nameTextField = new JTextField();
-        nameTextField.setBounds(250, 100, 250, 30);
+        nameTextField.setBounds(250, 130, 250, 30);
         back.add(nameTextField);
 
         label_1 = new JLabel("회원 ID : ");
-        label_1.setFont(new Font("휴먼둥근헤드라인", Font.PLAIN, 13));
-        label_1.setBounds(150, 150, 80, 30);
+        label_1.setForeground(new Color(255, 255, 255));
+        label_1.setFont(new Font("휴먼둥근헤드라인", Font.PLAIN, 15));
+        label_1.setBounds(150, 180, 100, 30);
         label_1.setHorizontalAlignment(JLabel.CENTER);
         back.add(label_1);
 
         idTextField = new JTextField();
-        idTextField.setBounds(250, 150, 250, 30);
+        idTextField.setBounds(250, 180, 250, 30);
         back.add(idTextField);
 
         label_2 = new JLabel("비밀번호 : ");
-        label_2.setFont(new Font("휴먼둥근헤드라인", Font.PLAIN, 13));
-        label_2.setBounds(150, 200, 80, 30);
+        label_2.setForeground(new Color(255, 255, 255));
+        label_2.setFont(new Font("휴먼둥근헤드라인", Font.PLAIN, 15));
+        label_2.setBounds(150, 230, 100, 30);
         label_2.setHorizontalAlignment(JLabel.CENTER);
         back.add(label_2);
 
         passwordField = new JPasswordField();
-        passwordField.setBounds(250, 200, 250, 30);
+        passwordField.setBounds(250, 230, 250, 30);
         back.add(passwordField);
 
         label_3 = new JLabel("전화번호 : ");
-        label_3.setFont(new Font("휴먼둥근헤드라인", Font.PLAIN, 13));
-        label_3.setBounds(150, 250, 80, 30);
+        label_3.setForeground(new Color(255, 255, 255));
+        label_3.setFont(new Font("휴먼둥근헤드라인", Font.PLAIN, 15));
+        label_3.setBounds(150, 280, 100, 30);
         label_3.setHorizontalAlignment(JLabel.CENTER);
         back.add(label_3);
 
         phoneTextField = new JTextField();
-        phoneTextField.setBounds(250, 250, 250, 30);
+        phoneTextField.setBounds(250, 280, 250, 30);
         back.add(phoneTextField);
 
         label_4 = new JLabel("면허증 여부 ");
-        label_4.setFont(new Font("휴먼둥근헤드라인", Font.PLAIN, 14));
-        label_4.setBounds(260, 300, 120, 30);
+        label_4.setForeground(new Color(255, 255, 255));
+        label_4.setFont(new Font("휴먼둥근헤드라인", Font.PLAIN, 15));
+        label_4.setBounds(260, 330, 120, 30);
         label_4.setHorizontalAlignment(JLabel.CENTER);
         back.add(label_4);
 
         licenseCheckBox = new JCheckBox(); 
-        licenseCheckBox.setBounds(380, 300, 250, 30);
+        licenseCheckBox.setBounds(380, 330, 250, 30);
         licenseCheckBox.setOpaque(false);
         back.add(licenseCheckBox);
 
         joinbutton = new JButton("회원가입");
         joinbutton.setFont(new Font("휴먼둥근헤드라인", Font.PLAIN, 12));
-        joinbutton.setBounds(350, 400, 90, 30);
+        joinbutton.setBounds(350, 380, 90, 30);
         joinbutton.setHorizontalAlignment(JLabel.CENTER);
         back.add(joinbutton);
 
         cancelButton = new JButton("취소");
         cancelButton.setFont(new Font("휴먼둥근헤드라인", Font.PLAIN, 12));
-        cancelButton.setBounds(260, 400, 60, 30);
+        cancelButton.setBounds(260, 380, 60, 30);
         cancelButton.setHorizontalAlignment(JLabel.CENTER);
         back.add(cancelButton);
 
