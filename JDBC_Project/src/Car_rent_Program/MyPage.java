@@ -2,39 +2,44 @@ package Car_rent_Program;
 
 
 
-import javax.swing.JPanel;
-import javax.swing.JPasswordField;
-import javax.swing.JScrollPane;
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.Graphics;
+import java.awt.Image;
+import java.awt.Toolkit;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.sql.SQLException;
+import java.text.DecimalFormat;
+import java.util.List;
+
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
-
-import java.awt.Font;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.sql.Date;
-import java.sql.SQLException;
-import java.text.DecimalFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.List;
-
+import javax.swing.JPanel;
+import javax.swing.JPasswordField;
+import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 import javax.swing.JTable;
+import javax.swing.JTextField;
+import javax.swing.SwingConstants;
+import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.JTableHeader;
+import javax.swing.table.TableColumnModel;
 
 import DAO.CarRentDAO;
 import DAO.CustomerDAO;
-import DAO.ManagerDAO;
 import DTO.Car_rent;
 import DTO.Customer;
+import DTO.CustomerServiceCenter;
 import DTO.Reservation;
 
-import javax.swing.JTextField;
-import javax.swing.table.DefaultTableModel;
-import javax.swing.table.JTableHeader;
-import javax.swing.JButton;
-import javax.swing.JComboBox;
-
+//마이페이지 화면 구현 - 승희, 병인
+//마이페이지 JDBC 연결 - 승희, 병인
 @SuppressWarnings("serial")
 public class MyPage extends JFrame {
 	
@@ -48,93 +53,122 @@ public class MyPage extends JFrame {
 	private JTable rent_jt;
 	private String[] car_rent = {"차량 번호", "차량 종류","대여 날짜","반납 날짜", "결제 방법", "금액" };
 	
+	
+	ImageIcon gifIcon;
+	ImageIcon servicegifIcon;
+	private JTextField service_textField;
+	private JTextField textField;
+	
+	
 	public MyPage(String name){
+		
 		
 		try {
 			rent = CarRentDAO.getCarRentDAO().selectByName(name);
 			customer = CustomerDAO.getCustomerDAO().selectByName(name);
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
-		setTitle("렌트가 예약 프로그램");
+		setTitle("SOULCAL");
     	setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    	setIconImage(Toolkit.getDefaultToolkit().getImage("./image/차량선택 백그라운드.jpg")); // 프로젝트 내부 경로로 변경
         setSize(900, 800);
         setLocationRelativeTo(null);
         setVisible(true);
         getContentPane().setLayout(null);
         
+        gifIcon = new ImageIcon("./image/소울카마이페이지GIF.gif"); // GIF 이미지 파일 경로로 변경
         
+        
+        JPanel panel = new JPanel() {
+            public void paintComponent(Graphics g) {
+                super.paintComponent(g);
+                Image image = gifIcon.getImage();
+                g.drawImage(image, 0, 0, getWidth(), getHeight(), this);
+            }
+        };
+
         
         JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
         tabbedPane.setBounds(0, 0, 885, 760);
         getContentPane().add(tabbedPane);
         
-        JPanel panel = new JPanel();
         tabbedPane.addTab("최근 예약 정보", null, panel, null);
         panel.setLayout(null);
         
         JLabel title = new JLabel("예약 정보");
+        title.setForeground(new Color(255, 255, 255));
         title.setBounds(360, 50, 115, 50);
-        title.setFont(new Font("맑은 고딕", Font.BOLD, 25));
+        title.setFont(new Font("휴먼둥근헤드라인", Font.BOLD, 22));
         panel.add(title);
         
         JLabel rentno = new JLabel("예약 번호 :");
-        rentno.setBounds(160, 160, 110, 30);
-        rentno.setFont(new Font("맑은 고딕", Font.BOLD, 18));
+        rentno.setForeground(new Color(255, 255, 255));
+        rentno.setBounds(160, 140, 110, 30);
+        rentno.setFont(new Font("휴먼둥근헤드라인", Font.BOLD, 18));
         panel.add(rentno);
         
         
         JLabel rentname = new JLabel("이름 :");
-        rentname.setBounds(160, 260, 110, 30);
-        rentname.setFont(new Font("맑은 고딕", Font.BOLD, 18));
+        rentname.setForeground(new Color(255, 255, 255));
+        rentname.setBounds(160, 240, 110, 30);
+        rentname.setFont(new Font("휴먼둥근헤드라인", Font.BOLD, 18));
         panel.add(rentname);
         
         JLabel rentcarno = new JLabel("차량 번호 :");
-        rentcarno.setBounds(160, 360, 110, 30);
-        rentcarno.setFont(new Font("맑은 고딕", Font.BOLD, 18));
+        rentcarno.setForeground(new Color(255, 255, 255));
+        rentcarno.setBounds(160, 340, 110, 30);
+        rentcarno.setFont(new Font("휴먼둥근헤드라인", Font.BOLD, 18));
         panel.add(rentcarno);
         
         
         JLabel startday = new JLabel("대여날짜 : ");
-        startday.setBounds(160, 460, 110, 30);
-        startday.setFont(new Font("맑은 고딕", Font.BOLD, 18));
+        startday.setForeground(new Color(255, 255, 255));
+        startday.setBounds(160, 440, 110, 30);
+        startday.setFont(new Font("휴먼둥근헤드라인", Font.BOLD, 18));
         panel.add(startday);
         
         
         JLabel endday = new JLabel("반납날짜 :");
-        endday.setBounds(160, 560, 110, 30);
-        endday.setFont(new Font("맑은 고딕", Font.BOLD, 18));
+        endday.setForeground(new Color(255, 255, 255));
+        endday.setBounds(160, 540, 110, 30);
+        endday.setFont(new Font("휴먼둥근헤드라인", Font.BOLD, 18));
         panel.add(endday);
         
         JLabel lblNewLabel_7 = new JLabel(rent.getName());
-        lblNewLabel_7.setBounds(360, 260, 400, 30);
-        lblNewLabel_7.setFont(new Font("맑은 고딕", Font.BOLD, 18));
+        lblNewLabel_7.setForeground(new Color(255, 255, 255));
+        lblNewLabel_7.setBounds(360, 240, 400, 30);
+        lblNewLabel_7.setFont(new Font("휴먼둥근헤드라인", Font.BOLD, 18));
         panel.add(lblNewLabel_7);
         
         JLabel lblNewLabel_8 = new JLabel(rent.getCar_no());
-        lblNewLabel_8.setBounds(360, 360, 400, 30);
-        lblNewLabel_8.setFont(new Font("맑은 고딕", Font.BOLD, 18));
+        lblNewLabel_8.setForeground(new Color(255, 255, 255));
+        lblNewLabel_8.setBounds(360, 340, 400, 30);
+        lblNewLabel_8.setFont(new Font("휴먼둥근헤드라인", Font.BOLD, 18));
         panel.add(lblNewLabel_8);
         
         JLabel lblNewLabel_9 = new JLabel(rent.getRent_start());
-        lblNewLabel_9.setBounds(360, 460, 400, 30);
-        lblNewLabel_9.setFont(new Font("맑은 고딕", Font.BOLD, 18));
+        lblNewLabel_9.setForeground(new Color(255, 255, 255));
+        lblNewLabel_9.setBounds(360, 440, 400, 30);
+        lblNewLabel_9.setFont(new Font("휴먼둥근헤드라인", Font.BOLD, 18));
         panel.add(lblNewLabel_9);
         
         JLabel lblNewLabel_10 = new JLabel(rent.getRent_end());
-        lblNewLabel_10.setBounds(360, 560, 400, 30);
-        lblNewLabel_10.setFont(new Font("맑은 고딕", Font.BOLD, 18));
+        lblNewLabel_10.setForeground(new Color(255, 255, 255));
+        lblNewLabel_10.setBounds(360, 540, 400, 30);
+        lblNewLabel_10.setFont(new Font("휴먼둥근헤드라인", Font.BOLD, 18));
         panel.add(lblNewLabel_10);
         
         JLabel lblNewLabel_6 = new JLabel(String.valueOf(rent.getRent_no()));
-        lblNewLabel_6.setBounds(360, 160, 400, 30);
-        lblNewLabel_6.setFont(new Font("맑은 고딕", Font.BOLD, 18));
+        lblNewLabel_6.setForeground(new Color(255, 255, 255));
+        lblNewLabel_6.setBounds(360, 140, 400, 30);
+        lblNewLabel_6.setFont(new Font("휴먼둥근헤드라인", Font.BOLD, 18));
         panel.add(lblNewLabel_6);
         
         JButton checkButton = new JButton("확인");
-        checkButton.setFont(new Font("맑은 고딕", Font.BOLD, 20));
+        checkButton.setForeground(new Color(0, 0, 0));
+        checkButton.setFont(new Font("휴먼둥근헤드라인", Font.BOLD, 20));
         checkButton.setBounds(360, 650, 110, 40);
         panel.add(checkButton);
         
@@ -149,72 +183,90 @@ public class MyPage extends JFrame {
 			}
 		});
         
+        JPanel customInfoUpdate = new JPanel() {
+            public void paintComponent(Graphics g) {
+                super.paintComponent(g);
+                Image image = gifIcon.getImage();
+                g.drawImage(image, 0, 0, getWidth(), getHeight(), this);
+            }
+        };
         
-        JPanel customInfoUpdate = new JPanel();
+        
         tabbedPane.addTab("정보 수정", null, customInfoUpdate, null);
         customInfoUpdate.setLayout(null);
         
         JLabel title_1 = new JLabel("정보 수정");
+        title_1.setForeground(new Color(255, 255, 255));
         title_1.setBounds(360, 50, 115, 50);
-        title_1.setFont(new Font("맑은 고딕", Font.BOLD, 25));
+        title_1.setFont(new Font("휴먼둥근헤드라인", Font.BOLD, 22));
         customInfoUpdate.add(title_1);
         
         JLabel nameLabel = new JLabel("이름 : ");
-        nameLabel.setBounds(160, 160, 110, 30);
-        nameLabel.setFont(new Font("맑은 고딕", Font.BOLD, 18));
+        nameLabel.setForeground(new Color(255, 255, 255));
+        nameLabel.setBounds(160, 130, 170, 30);
+        nameLabel.setFont(new Font("휴먼둥근헤드라인", Font.BOLD, 18));
         customInfoUpdate.add(nameLabel);
         
         JLabel lblId = new JLabel("ID : ");
-        lblId.setBounds(160, 260, 110, 30);
-        lblId.setFont(new Font("맑은 고딕", Font.BOLD, 18));
+        lblId.setForeground(new Color(255, 255, 255));
+        lblId.setBounds(160, 230, 170, 30);
+        lblId.setFont(new Font("휴먼둥근헤드라인", Font.BOLD, 18));
         customInfoUpdate.add(lblId);
         
         JLabel pwTry = new JLabel("비밀번호 : ");
-        pwTry.setBounds(160, 360, 110, 30);
-        pwTry.setFont(new Font("맑은 고딕", Font.BOLD, 18));
+        pwTry.setForeground(new Color(255, 255, 255));
+        pwTry.setBounds(160, 330, 170, 30);
+        pwTry.setFont(new Font("휴먼둥근헤드라인", Font.BOLD, 18));
         customInfoUpdate.add(pwTry);
         
         JLabel pwReTry = new JLabel("비밀번호 확인 : ");
-        pwReTry.setFont(new Font("맑은 고딕", Font.BOLD, 18));
-        pwReTry.setBounds(160, 460, 135, 30);
+        pwReTry.setForeground(new Color(255, 255, 255));
+        pwReTry.setFont(new Font("휴먼둥근헤드라인", Font.BOLD, 18));
+        pwReTry.setBounds(160, 430, 170, 30);
         customInfoUpdate.add(pwReTry);
         
         JLabel rentno_4 = new JLabel("전화번호 : ");
-        rentno_4.setBounds(160, 560, 110, 30);
-        rentno_4.setFont(new Font("맑은 고딕", Font.BOLD, 18));
+        rentno_4.setForeground(new Color(255, 255, 255));
+        rentno_4.setBounds(160, 530, 170, 30);
+        rentno_4.setFont(new Font("휴먼둥근헤드라인", Font.BOLD, 18));
         customInfoUpdate.add(rentno_4);
         
         JLabel nameLa = new JLabel(customer.getName());
-        nameLa.setBounds(360, 160, 300, 30);
-        nameLa.setFont(new Font("맑은 고딕", Font.BOLD, 18));
+        nameLa.setForeground(new Color(255, 255, 255));
+        nameLa.setBounds(360, 130, 300, 30);
+        nameLa.setFont(new Font("휴먼둥근헤드라인", Font.PLAIN, 20));
         customInfoUpdate.add(nameLa);
         
         JLabel nameLab =  new JLabel(customer.getCustomer_id());
-        nameLab.setBounds(360, 260, 300, 30);
-        nameLab.setFont(new Font("맑은 고딕", Font.BOLD, 18));
+        nameLab.setForeground(new Color(255, 255, 255));
+        nameLab.setBounds(360, 230, 300, 30);
+        nameLab.setFont(new Font("휴먼둥근헤드라인", Font.PLAIN, 20));
         customInfoUpdate.add(nameLab);
         
         
         textField_1 = new JPasswordField(customer.getPw());
-        textField_1.setBounds(360, 360, 300, 30);
-        textField_1.setFont(new Font("맑은 고딕", Font.BOLD, 18));
+        textField_1.setForeground(new Color(0, 0, 0));
+        textField_1.setBounds(360, 330, 300, 40);
+        textField_1.setFont(new Font("맑은 고딕", Font.BOLD, 20));
         textField_1.setColumns(10);
         customInfoUpdate.add(textField_1);
         
         passwordField = new JPasswordField();
-        passwordField.setFont(new Font("맑은 고딕", Font.BOLD, 18));
+        passwordField.setForeground(new Color(0, 0, 0));
+        passwordField.setFont(new Font("맑은 고딕", Font.BOLD, 20));
         passwordField.setColumns(10);
-        passwordField.setBounds(360, 460, 300, 30);
+        passwordField.setBounds(360, 430, 300, 40);
         customInfoUpdate.add(passwordField);
         
         textField_2 = new JTextField(customer.getPhone());
-        textField_2.setBounds(360, 560, 300, 30);
-        textField_2.setFont(new Font("맑은 고딕", Font.BOLD, 18));
+        textField_2.setForeground(new Color(0, 0, 0));
+        textField_2.setBounds(360, 530, 300, 40);
+        textField_2.setFont(new Font("휴먼둥근헤드라인", Font.PLAIN, 20));
         textField_2.setColumns(10);
         customInfoUpdate.add(textField_2);
         
         JButton saveButton = new JButton("저장");
-        saveButton.setFont(new Font("맑은 고딕", Font.BOLD, 20));
+        saveButton.setFont(new Font("휴먼둥근헤드라인", Font.BOLD, 20));
         saveButton.setBounds(360, 640, 110, 40);
         customInfoUpdate.add(saveButton);
         
@@ -297,6 +349,12 @@ public class MyPage extends JFrame {
                     DecimalFormat formatter = new DecimalFormat("#,###,###,###");
                     rent_dm.setRowCount(0); // 기존 테이블 데이터 초기화
                     
+                    DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
+        	        centerRenderer.setHorizontalAlignment(SwingConstants.CENTER); // 가운데 정렬 설정
+
+        			DefaultTableCellRenderer rightRenderer = new DefaultTableCellRenderer();
+                    rightRenderer.setHorizontalAlignment(SwingConstants.RIGHT); // 오른쪽 정렬 설정
+        	        
                     for (Reservation reservation : reservations) {
                         String[] rowData = new String[6];
                         rowData[0] = reservation.getCarNo();
@@ -318,6 +376,17 @@ public class MyPage extends JFrame {
                             rent_dm.addRow(rowData);
                         }
                     }
+                    // 오른쪽 정렬 설정 적용
+                    TableColumnModel columnModel = rent_jt.getColumnModel();
+                    columnModel.getColumn(5).setCellRenderer(rightRenderer);
+                    
+                    
+                 // 가운데 정렬 설정 적용
+        	        for (int i = 0; i < columnModel.getColumnCount(); i++) {
+        	            if (i != 5) {
+        	                columnModel.getColumn(i).setCellRenderer(centerRenderer);
+        	            }
+        	        }
                 } catch (SQLException ex) {
                     JOptionPane.showMessageDialog(null, "예약 내역 조회에 실패하였습니다.", "오류", JOptionPane.ERROR_MESSAGE);
                     ex.printStackTrace();
@@ -331,6 +400,12 @@ public class MyPage extends JFrame {
             List<Reservation> reservations = CustomerDAO.getCustomerDAO().getReservationsByCustomer(name);
             DecimalFormat formatter = new DecimalFormat("#,###,###,###");
             
+            DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
+	        centerRenderer.setHorizontalAlignment(SwingConstants.CENTER); // 가운데 정렬 설정
+
+			DefaultTableCellRenderer rightRenderer = new DefaultTableCellRenderer();
+            rightRenderer.setHorizontalAlignment(SwingConstants.RIGHT); // 오른쪽 정렬 설정
+            
             for (Reservation reservation : reservations) {
                 String[] rowData = new String[6];
                 rowData[0] = reservation.getCarNo();
@@ -342,21 +417,145 @@ public class MyPage extends JFrame {
                 
                 rent_dm.addRow(rowData);
             }
+         // 오른쪽 정렬 설정 적용
+            TableColumnModel columnModel = rent_jt.getColumnModel();
+            columnModel.getColumn(5).setCellRenderer(rightRenderer);
+            
+            
+         // 가운데 정렬 설정 적용
+	        for (int i = 0; i < columnModel.getColumnCount(); i++) {
+	            if (i != 5) {
+	                columnModel.getColumn(i).setCellRenderer(centerRenderer);
+	            }
+	        }
+            
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(null, "예약 내역 조회에 실패하였습니다.", "오류", JOptionPane.ERROR_MESSAGE);
             ex.printStackTrace();
         }
-
-
-
+        
+        JPanel service_center = new JPanel() {
+        	public void paintComponent(Graphics g) {
+        	      super.paintComponent(g);
+                  Image image = servicegifIcon.getImage();
+                  g.drawImage(image, 0, 0, getWidth(), getHeight(), this);
+        	}
+        };
+        service_center.setLayout(null);
+        tabbedPane.addTab("고객센터", null, service_center, null);
+        
+        JLabel service_1 = new JLabel("고객센터");
+        service_1.setForeground(Color.WHITE);
+        service_1.setFont(new Font("휴먼둥근헤드라인", Font.BOLD, 22));
+        service_1.setBounds(360, 50, 115, 50);
+        service_center.add(service_1);
+        
+        JLabel service_nameLabel = new JLabel("이름 : ");
+        service_nameLabel.setForeground(Color.WHITE);
+        service_nameLabel.setFont(new Font("휴먼둥근헤드라인", Font.BOLD, 18));
+        service_nameLabel.setBounds(160, 130, 110, 30);
+        service_center.add(service_nameLabel);
+        
+        JLabel service_lb = new JLabel("ID : ");
+        service_lb.setForeground(Color.WHITE);
+        service_lb.setFont(new Font("휴먼둥근헤드라인", Font.BOLD, 18));
+        service_lb.setBounds(160, 230, 110, 30);
+        service_center.add(service_lb);
+        
+        JLabel service_phone = new JLabel("전화번호 : ");
+        service_phone.setForeground(Color.WHITE);
+        service_phone.setFont(new Font("휴먼둥근헤드라인", Font.BOLD, 18));
+        service_phone.setBounds(160, 330, 110, 30);
+        service_center.add(service_phone);
+        
+        JLabel service_name = new JLabel(customer.getName());
+        service_name.setForeground(new Color(255, 255, 255));
+        service_name.setBounds(300, 130, 300, 30);
+        service_name.setFont(new Font("휴먼둥근헤드라인", Font.PLAIN, 20));
+        service_center.add(service_name);
+        
+        JLabel service_id = new JLabel(customer.getCustomer_id());
+        service_id.setForeground(Color.WHITE);
+        service_id.setFont(new Font("휴먼둥근헤드라인", Font.PLAIN, 20));
+        service_id.setBounds(300, 230, 300, 30);
+        service_center.add(service_id);
+        
+        service_textField = new JTextField(customer.getPhone());
+        service_textField.setForeground(new Color(0, 0, 0));
+        service_textField.setBounds(300, 330, 483, 30);
+        service_textField.setFont(new Font("휴먼둥근헤드라인", Font.PLAIN, 18));
+        service_textField.setColumns(10);
+        service_center.add(service_textField);
+        
+        JLabel service_detail = new JLabel("내용 : ");
+        service_detail.setForeground(Color.WHITE);
+        service_detail.setFont(new Font("휴먼둥근헤드라인", Font.BOLD, 18));
+        service_detail.setBounds(160, 480, 110, 30);
+        service_center.add(service_detail);
+        
+        textField = new JTextField();
+        textField.setFont(new Font("맑은 고딕", Font.PLAIN, 14));
+        textField.setBounds(300, 430, 483, 178);
+        service_center.add(textField);
+        textField.setColumns(10);
+        
+        JButton receipt_button = new JButton("접수");
+        receipt_button.setFont(new Font("휴먼둥근헤드라인", Font.BOLD, 20));
+        receipt_button.setBounds(360, 640, 110, 50);
+        service_center.add(receipt_button);
+        
+        receipt_button.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String name = customer.getName(); // 고객 이름
+                String customer_id = customer.getCustomer_id(); // 고객 ID
+                String phone = service_textField.getText(); // 전화번호
+                String service = textField.getText(); // 접수 내용
+                
+                CustomerServiceCenter dto = new CustomerServiceCenter(name, customer_id, phone, service);
+                
+                try {
+                    boolean success = CustomerDAO.getCustomerDAO().service(dto);
+                    if (success) {
+                        JOptionPane.showMessageDialog(null, "고객센터에 접수되었습니다.");
+                        
+                        // 텍스트 필드 초기화
+                        service_textField.setText("");
+                        textField.setText("");
+                    } else {
+                        JOptionPane.showMessageDialog(null, "고객센터 접수에 실패하였습니다.", "오류", JOptionPane.ERROR_MESSAGE);
+                    }
+                } catch (SQLException ex) {
+                    ex.printStackTrace();
+                }
+            }
+        });
         
         rent_Panel.add(rent_la);
         rent_Panel.add(rent_jtf);
         rent_Panel.add(rent_jc);
         rent_Panel.add(rent_btn);
         rent_Panel.add(rent_jsp);
-
+        
         tabbedPane.addTab("이전 예약 내역", rent_Panel);
+        
+        
+ //////////////////////////////////////////////////////////////////////////////////////////////////////////////
+       
+        servicegifIcon = new ImageIcon("./image/소울카고객센터GIF.gif"); // GIF 이미지 파일 경로로 변경
+
+
+
+
+
+
+
+        
+
+
+
+        
+       
 	}
 }
 
