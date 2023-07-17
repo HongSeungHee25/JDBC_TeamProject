@@ -5,10 +5,12 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
+import java.awt.Graphics;
 import java.awt.GridBagConstraints;
 import java.awt.GridLayout;
 import java.awt.Image;
 import java.awt.Insets;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
@@ -16,11 +18,13 @@ import java.awt.event.MouseEvent;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.sql.SQLException;
+import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.sql.Date;
 
+import javax.swing.BorderFactory;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -74,11 +78,10 @@ public class Pay extends JPanel {
 		this.insuranceFee = insuranceFee;
 	}
 	
-    private String paymethod;
     private String name;
     private Car_rent rent;
 	private Payment payment;
-	private String selectedCar;  // 선택한 차량 정보를 저장하기 위한 변수
+	private String selectedCar;	// 선택한 차량 정보를 저장하기 위한 변수
 	private int rentalFee;		// 선택한 차량의 일일 대여료를 저장하기 위한 변수
 	private int insuranceFee;	//선택한 차량의 일일 보험료를 저장하기 위한 변수 
 	private Date rentStartDate;
@@ -99,6 +102,7 @@ public class Pay extends JPanel {
 	private JButton cancellation_button;
 	JTextField rent_start_textField;
 	JTextField rent_end_textField;
+	
 	private ImageIcon icon = new ImageIcon("img/calendar_icon.jpg");
 	private Image im = icon.getImage();
 	private Image im2 = im.getScaledInstance(30, 30, Image.SCALE_DEFAULT);
@@ -113,6 +117,10 @@ public class Pay extends JPanel {
 	int calendarWindowTest = 0;
 	// 클릭 횟수 감지
 	int clickCheck = 0;
+	// "," 표시
+	DecimalFormat formatter = new DecimalFormat("#,###,###,###");
+	
+	ImageIcon gifIcon;
 
 	// Pay 생성자에 선택한 차량 정보를 전달받도록 수정
 		public Pay(Choicecar choicecar, String selectedCar, int rentalFee, int insuranceFee,String na) throws SQLException {
@@ -128,10 +136,13 @@ public class Pay extends JPanel {
 
 	
 	public Pay() {
-		// TODO Auto-generated constructor stub
+		
 	}
 
 	private void initialize() {
+		setLayout(new BorderLayout());
+        setPreferredSize(new Dimension(900, 800));
+		
 
 		// calendarWindowTest 초기화
 		calendarWindowTest = 0;
@@ -139,41 +150,55 @@ public class Pay extends JPanel {
 		GridBagConstraints c = new GridBagConstraints();
 		c.insets = new Insets(5, 5, 50, 50);
 
-		// 첫 번째 열
 		
+		gifIcon = new ImageIcon("./image/소울카결제화면GIF.gif"); // GIF 이미지 파일 경로로 변경
+		
+		JPanel backgroundPanel = new JPanel() {
+            public void paintComponent(Graphics g) {
+                super.paintComponent(g);
+                Image image = gifIcon.getImage();
+                g.drawImage(image, 0, 0, getWidth(), getHeight(), this);
+            }
+        };
+
+        backgroundPanel.setLayout(null);
+
+		
+		// 첫 번째 열
 		JTabbedPane tabbedPane = new JTabbedPane();
         tabbedPane.setFont(new Font("맑은 고딕", Font.BOLD, 15));
-		JPanel firstColumnPanel = new JPanel();
-		firstColumnPanel.setLayout(null);
-		firstColumnPanel.setPreferredSize(new Dimension(900, 800));
-
+        backgroundPanel.setLayout(null);
+        backgroundPanel.setPreferredSize(new Dimension(900, 800));
 
 		/////////////////////////////////////////////////////////////////
 		
 		
 		choicecar_label = new JLabel("선택한 차종 : ");
 		choicecar_label.setHorizontalAlignment(SwingConstants.CENTER);
-		choicecar_label.setFont(new Font("맑은 고딕", Font.BOLD, 20));
-		choicecar_label.setBounds(200, 50, 150, 30);
-		firstColumnPanel.add(choicecar_label);
+		choicecar_label.setFont(new Font("휴먼둥근헤드라인", Font.BOLD, 22));
+		choicecar_label.setForeground(new Color(255, 255, 255));
+		choicecar_label.setBounds(180, 50, 180, 30);
+		backgroundPanel.add(choicecar_label);
 
 		// choicecar_label의 텍스트를 선택한 차량 정보로 업데이트
 		choicecar_price = new JLabel(selectedCar);
-		choicecar_price.setFont(new Font("맑은 고딕", Font.BOLD, 18));
-		choicecar_price.setBounds(350, 50, 300, 40);
-		firstColumnPanel.add(choicecar_price);
+		choicecar_price.setFont(new Font("휴먼둥근헤드라인", Font.BOLD, 22));
+		choicecar_price.setForeground(new Color(255, 255, 255));
+		choicecar_price.setBounds(350, 45, 300, 40);
+		backgroundPanel.add(choicecar_price);
 
 		/////////////////////////////////////////////////////////////////
 		rent_start_label = new JLabel("대여 날짜 : ");
-		rent_start_label.setFont(new Font("맑은 고딕", Font.BOLD, 20));
-		rent_start_label.setBounds(200, 150, 150, 30);
+		rent_start_label.setFont(new Font("휴먼둥근헤드라인", Font.BOLD, 22));
+		rent_start_label.setForeground(new Color(255, 255, 255));
+		rent_start_label.setBounds(180, 150, 180, 30);
 		rent_start_label.setHorizontalAlignment(JLabel.CENTER);
-		firstColumnPanel.add(rent_start_label);
+		backgroundPanel.add(rent_start_label);
 
 		rent_start_textField = new JTextField();
-		rent_start_textField.setFont(new Font("맑은 고딕", Font.BOLD, 18));
+		rent_start_textField.setFont(new Font("휴먼둥근헤드라인", Font.BOLD, 22));
 		rent_start_textField.setBounds(350, 150, 300, 40);
-		firstColumnPanel.add(rent_start_textField);
+		backgroundPanel.add(rent_start_textField);
 
 		icon = new ImageIcon("./image/calendar_icon.jpg");
 		im = icon.getImage();
@@ -182,27 +207,29 @@ public class Pay extends JPanel {
 
 		calendar_Label = new JLabel(icon);
 		calendar_Label.setBounds(660, 150, 50, 40);
-		firstColumnPanel.add(calendar_Label);
+		backgroundPanel.add(calendar_Label);
 		
 		
 		/////////////////////////////////////////////////////////////////
 		rent_end_label = new JLabel("반납 날짜 : ");
-		rent_end_label.setFont(new Font("맑은 고딕", Font.BOLD, 20));
-		rent_end_label.setBounds(200, 250, 150, 30);
+		rent_end_label.setFont(new Font("휴먼둥근헤드라인", Font.BOLD, 22));
+		rent_end_label.setForeground(new Color(255, 255, 255));
+		rent_end_label.setBounds(180, 250, 180, 30);
 		rent_end_label.setHorizontalAlignment(JLabel.CENTER);
-		firstColumnPanel.add(rent_end_label);
+		backgroundPanel.add(rent_end_label);
 
 		rent_end_textField = new JTextField();
-		rent_end_textField.setFont(new Font("맑은 고딕", Font.BOLD, 18));
+		rent_end_textField.setFont(new Font("휴먼둥근헤드라인", Font.BOLD, 22));
 		rent_end_textField.setBounds(350, 250, 300, 40);
-		firstColumnPanel.add(rent_end_textField);
+		backgroundPanel.add(rent_end_textField);
 
 		/////////////////////////////////////////////////////////////////
 		price_label = new JLabel("결제 할 금액 : ");
-		price_label.setFont(new Font("맑은 고딕", Font.BOLD, 20));
-		price_label.setBounds(200, 350, 150, 30);
+		price_label.setFont(new Font("휴먼둥근헤드라인", Font.BOLD, 22));
+		price_label.setForeground(new Color(255, 255, 255));
+		price_label.setBounds(180, 350, 180, 30);
 		price_label.setHorizontalAlignment(JLabel.CENTER);
-		firstColumnPanel.add(price_label);
+		backgroundPanel.add(price_label);
 		
 		// 결제 금액 계산
 	    totalAmount = 0; // 초기화
@@ -211,37 +238,39 @@ public class Pay extends JPanel {
 	        rentalDays = (int) (diff / (24 * 60 * 60 * 1000));
 	        totalAmount = (rentalFee + insuranceFee) * rentalDays;
 	    }
-
+	    
 		price_Label = new JLabel(totalAmount + "원");
-		price_Label.setFont(new Font("맑은 고딕", Font.BOLD, 18));
-		price_Label.setBounds(350, 350, 300, 40);
-		firstColumnPanel.add(price_Label);
+		price_Label.setFont(new Font("휴먼둥근헤드라인", Font.BOLD, 22));
+		price_Label.setForeground(new Color(255, 255, 255));
+		price_Label.setBounds(350, 345, 300, 40);
+		backgroundPanel.add(price_Label);
 
 		/////////////////////////////////////////////////////////////////
 		payment_label = new JLabel("결제 방법 : ");
-		payment_label.setFont(new Font("맑은 고딕", Font.BOLD, 20));
-		payment_label.setBounds(200, 450, 150, 30);
+		payment_label.setFont(new Font("휴먼둥근헤드라인", Font.BOLD, 22));
+		payment_label.setForeground(new Color(255, 255, 255));
+		payment_label.setBounds(180, 450, 180, 30);
 		payment_label.setHorizontalAlignment(SwingConstants.CENTER);
-		firstColumnPanel.add(payment_label);
+		backgroundPanel.add(payment_label);
 
 		String[] temp = { "신용카드", "계좌이체" };
 		JComboBox<String> jc = new JComboBox<>(temp);
-		jc.setFont(new Font("맑은 고딕", Font.BOLD, 18));
+		jc.setFont(new Font("휴먼둥근헤드라인", Font.BOLD, 22));
 		jc.setBounds(350, 450, 300, 40);
-		firstColumnPanel.add(jc);
+		backgroundPanel.add(jc);
 
 		/////////////////////////////////////////////////////////////////
 		pay_button = new JButton("결제하기");
-		pay_button.setFont(new Font("맑은 고딕", Font.BOLD, 17));
+		pay_button.setFont(new Font("휴먼둥근헤드라인", Font.BOLD, 22));
 		pay_button.setBounds(430, 600, 150, 50);
-		firstColumnPanel.add(pay_button);
+		backgroundPanel.add(pay_button);
 
 		cancellation_button = new JButton("취소");
-		cancellation_button.setFont(new Font("맑은 고딕", Font.BOLD, 17));
+		cancellation_button.setFont(new Font("휴먼둥근헤드라인", Font.BOLD, 22));
 		cancellation_button.setBounds(250, 600, 150, 50);
-		firstColumnPanel.add(cancellation_button);
+		backgroundPanel.add(cancellation_button);
 		
-		add(firstColumnPanel);
+		add(backgroundPanel);
 
 		calendar_Label.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent me) {
@@ -264,9 +293,16 @@ public class Pay extends JPanel {
 	        	
 	            int option = JOptionPane.showConfirmDialog(null, "결제하시겠습니까?", "결제 확인", JOptionPane.YES_NO_OPTION);
 	            if (option == JOptionPane.YES_OPTION) {
+	            	
+	            	if (rentStartDate == null || rentEndDate == null || rent_start_textField.getText().isEmpty() || rent_end_textField.getText().isEmpty()) {
+	                    JOptionPane.showMessageDialog(null, "렌트 기간을 정확히 입력해주세요.");
+	                    return; // 날짜가 비어 있으면 함수 종료
+	                }
+	            	
 	                SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 	                try {
-	                	rentStartDate = new java.sql.Date(dateFormat.parse(rent_start_textField.getText()).getTime());
+	                    rentStartDate = new java.sql.Date(dateFormat.parse(rent_start_textField.getText()).getTime());
+	                    rentEndDate = new java.sql.Date(dateFormat.parse(rent_end_textField.getText()).getTime());
 	                    try {
 	                    	// 결제 금액 계산
 	                    	totalAmount = 0; // 초기화
@@ -274,7 +310,6 @@ public class Pay extends JPanel {
 	                    		diff = rentEndDate.getTime() - rentStartDate.getTime();
 	                    		rentalDays = (int) (diff / (24 * 60 * 60 * 1000));
 	                    		totalAmount = (rentalFee + insuranceFee) * rentalDays;
-	                    		
 	                    	}
 	                    	Car_Superintend cs = new Car_Superintend();
 	                    	cs = CarSuperintendDAO.getCarSuperintendDAO().selectByNO(selectedCar);
@@ -300,9 +335,10 @@ public class Pay extends JPanel {
 
 	                    	PaymentDAO.getPaymentDAO().insertPayment(payment);
 						} catch (SQLException e1) {
-							// TODO Auto-generated catch block
+							
 							e1.printStackTrace();
 						}
+	                    
 	                    rentEndDate = new java.sql.Date(dateFormat.parse(rent_end_textField.getText()).getTime());
 	                    
 	                    
@@ -317,22 +353,19 @@ public class Pay extends JPanel {
 	                        // '확인' 버튼을 클릭한 경우 -> 로그인 화면으로 연결
 	                        new Login().setVisible(true);
 	                        
-	                     // 추가: 결제 완료 창 띄우기
-	                        JOptionPane.showMessageDialog(null, totalAmount+ "원 결제가 완료되었습니다.");
+	                        // 추가: 결제 완료 창 띄우기
+	                        JOptionPane.showMessageDialog(null, formatter.format(totalAmount) + "원 결제가 완료되었습니다.");
 
-	                    } else {
-	                        JOptionPane.showMessageDialog(null, "날짜를 선택해주세요.");
-	                    }
+	                    } 
 	                } catch (ParseException ex) {
 	                    ex.printStackTrace();
+	                    JOptionPane.showMessageDialog(null, "잘못된 날짜 형식입니다.");
 	                }
 	            } else {
 	                JOptionPane.showMessageDialog(null, "결제가 취소되었습니다.");
 	            }
 	        }
 	    });
-
-
 
 		// 취소 버튼 액션 리스너 
 		cancellation_button.addActionListener(new ActionListener() {
@@ -349,21 +382,12 @@ public class Pay extends JPanel {
 		});
 		
 	}
-
-	
-	
-	
 	
 	protected void rent_start(Date date) {
-		// TODO Auto-generated method stub
 		
 	}
 
-
-
-
-
-	/////////////////////////////////////////////////////////////////////////////////////////////////////////
+	// 달력 파트
 	class CustomCalendar extends JFrame implements ActionListener, WindowListener {
 
 		 private Pay pay; // Pay 클래스 참조를 저장할 변수 추가
@@ -409,14 +433,14 @@ public class Pay extends JPanel {
 			for (int i = 1; i <= 12; i++) {
 				monthModel.addElement(i);
 			}
-			////////////////////////// 프레임///////////////////////////////////////////
+			// 프레임
 			// 상단 지역
 			add("North", bar);
 			bar.setLayout(new FlowLayout());
 			bar.setSize(300, 400);
 			bar.add(lastMonth);
 
-			////////////////////////// 달력/////////////////////////////////////////////
+			// 달력
 			bar.add(yearCombo);
 			yearCombo.setModel(yearModel);
 			yearCombo.setSelectedItem(year);
@@ -558,8 +582,10 @@ public class Pay extends JPanel {
 
 				                // 결제 금액 계산
 				                int totalAmount = (pay.getRentalFee()+pay.getInsuranceFee()) * rentalDays;
-				                price_Label.setText(totalAmount + "원");  // 결제 금액을 화면에 표시
+				                
+				                price_Label.setText(formatter.format(totalAmount) + "원");  // 결제 금액을 화면에 표시
 				                dispose();  // 캘린더 창 닫기
+				                calendarWindowTest = 0;
 				            }
 				        }
 
