@@ -107,6 +107,21 @@ CREATE TABLE Payment
 INSERT INTO PAYMENT p VALUES (1001,'김모모',1,sysdate,NULL,'신용카드','123허1234');
 INSERT INTO PAYMENT p VALUES (1001,'김모모',1,NULL ,NULL,'신용카드','123허1234');
 
+-- 고객센터 테이블
+CREATE TABLE CustomerServiceCenter
+(
+	service_no NUMBER NOT NULL,
+    name varchar2(20) NOT NULL,
+    customer_id varchar2(20) NOT NULL,
+    phone varchar2(20) NOT NULL,
+    service varchar2(1000),
+    PRIMARY KEY (service_no), 
+    FOREIGN KEY (name) REFERENCES customer (name)
+);
+
+CREATE SEQUENCE service_seq START WITH 1;
+
+SELECT SERVICE_NO,SERVICE FROM CUSTOMERSERVICECENTER c WHERE name = '홍승희';
 
 
 
