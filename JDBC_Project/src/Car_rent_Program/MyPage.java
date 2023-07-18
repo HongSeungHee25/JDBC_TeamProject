@@ -52,7 +52,11 @@ public class MyPage extends JFrame {
 	private DefaultTableModel rent_dm; 
 	private JTable rent_jt;
 	private String[] car_rent = {"차량 번호", "차량 종류","대여 날짜","반납 날짜", "결제 방법", "금액" };
-	
+	JLabel carRent_no;
+	JLabel rentName;
+	JLabel rentCar_no;
+	JLabel rent_Start_day;
+	JLabel rent_end_day;
 	
 	ImageIcon gifIcon;
 	ImageIcon servicegifIcon;
@@ -136,35 +140,58 @@ public class MyPage extends JFrame {
         endday.setFont(new Font("휴먼둥근헤드라인", Font.BOLD, 18));
         panel.add(endday);
         
-        JLabel lblNewLabel_7 = new JLabel(rent.getName());
-        lblNewLabel_7.setForeground(new Color(255, 255, 255));
-        lblNewLabel_7.setBounds(360, 240, 400, 30);
-        lblNewLabel_7.setFont(new Font("휴먼둥근헤드라인", Font.BOLD, 18));
-        panel.add(lblNewLabel_7);
+        if (rent != null) {
+        	rentName = new JLabel(String.valueOf(rent.getName()));
+        } else {
+        	rentName = new JLabel("최근 예약 내역 없음");
+        }
         
-        JLabel lblNewLabel_8 = new JLabel(rent.getCar_no());
-        lblNewLabel_8.setForeground(new Color(255, 255, 255));
-        lblNewLabel_8.setBounds(360, 340, 400, 30);
-        lblNewLabel_8.setFont(new Font("휴먼둥근헤드라인", Font.BOLD, 18));
-        panel.add(lblNewLabel_8);
+        rentName.setForeground(new Color(255, 255, 255));
+        rentName.setBounds(360, 240, 400, 30);
+        rentName.setFont(new Font("휴먼둥근헤드라인", Font.BOLD, 18));
+        panel.add(rentName);
         
-        JLabel lblNewLabel_9 = new JLabel(rent.getRent_start());
-        lblNewLabel_9.setForeground(new Color(255, 255, 255));
-        lblNewLabel_9.setBounds(360, 440, 400, 30);
-        lblNewLabel_9.setFont(new Font("휴먼둥근헤드라인", Font.BOLD, 18));
-        panel.add(lblNewLabel_9);
         
-        JLabel lblNewLabel_10 = new JLabel(rent.getRent_end());
-        lblNewLabel_10.setForeground(new Color(255, 255, 255));
-        lblNewLabel_10.setBounds(360, 540, 400, 30);
-        lblNewLabel_10.setFont(new Font("휴먼둥근헤드라인", Font.BOLD, 18));
-        panel.add(lblNewLabel_10);
+        if (rent != null) {
+        	rentCar_no = new JLabel(String.valueOf(rent.getCar_no()));
+        } else {
+        	rentCar_no = new JLabel("최근 예약 내역 없음");
+        }
+        rentCar_no.setForeground(new Color(255, 255, 255));
+        rentCar_no.setBounds(360, 340, 400, 30);
+        rentCar_no.setFont(new Font("휴먼둥근헤드라인", Font.BOLD, 18));
+        panel.add(rentCar_no);
         
-        JLabel lblNewLabel_6 = new JLabel(String.valueOf(rent.getRent_no()));
-        lblNewLabel_6.setForeground(new Color(255, 255, 255));
-        lblNewLabel_6.setBounds(360, 140, 400, 30);
-        lblNewLabel_6.setFont(new Font("휴먼둥근헤드라인", Font.BOLD, 18));
-        panel.add(lblNewLabel_6);
+        if (rent != null) {
+        	rent_Start_day = new JLabel(String.valueOf(rent.getRent_start()));
+        } else {
+        	rent_Start_day = new JLabel("최근 예약 내역 없음");
+        }
+        rent_Start_day.setForeground(new Color(255, 255, 255));
+        rent_Start_day.setBounds(360, 440, 400, 30);
+        rent_Start_day.setFont(new Font("휴먼둥근헤드라인", Font.BOLD, 18));
+        panel.add(rent_Start_day);
+        
+        
+        if (rent != null) {
+        	rent_end_day = new JLabel(String.valueOf(rent.getRent_end()));
+        } else {
+        	rent_end_day = new JLabel("최근 예약 내역 없음");
+        }
+        rent_end_day.setForeground(new Color(255, 255, 255));
+        rent_end_day.setBounds(360, 540, 400, 30);
+        rent_end_day.setFont(new Font("휴먼둥근헤드라인", Font.BOLD, 18));
+        panel.add(rent_end_day);
+        
+        if (rent != null) {
+            carRent_no = new JLabel(String.valueOf(rent.getRent_no()));
+        } else {
+            carRent_no = new JLabel("최근 예약 내역 없음");
+        }
+        carRent_no.setForeground(new Color(255, 255, 255));
+        carRent_no.setBounds(360, 140, 400, 30);
+        carRent_no.setFont(new Font("휴먼둥근헤드라인", Font.BOLD, 18));
+        panel.add(carRent_no);
         
         JButton checkButton = new JButton("확인");
         checkButton.setForeground(new Color(0, 0, 0));
