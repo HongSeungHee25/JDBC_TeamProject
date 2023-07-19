@@ -103,20 +103,12 @@ public class CustomerDAO {
 				    List<Reservation> reservations = new ArrayList<>();
 				    
 				    Connection connection = OracleUtility.getConnection();
-				    String sql = "SELECT " +
-				            "c.CAR_NO, " +
-				            "c.CAR_TYPE, " +
-				            "TO_CHAR(cr.RENT_START, 'yyyy-mm-dd') AS RENT_START, " +
-				            "TO_CHAR(cr.RENT_END, 'yyyy-mm-dd') AS RENT_END, " +
-				            "p.PAYMENT_METHOD, " +
-				            "c.PRICE + c.INSURANCE AS money " +
-				            "FROM " +
-				            "CAR c " +
-				            "JOIN CAR_RENT cr ON c.CAR_NO = cr.CAR_NO " +
-				            "JOIN PAYMENT p ON c.CAR_NO = p.CAR_NO " +
-				            "WHERE " +
-				            "cr.NAME = ? " +
-				            "ORDER BY RENT_START";
+				    String sql = "SELECT car_no , car_type, to_char(rent_start,'yyyy-mm-dd') as rent_start, TO_CHAR(rent_end, 'yyyy-mm-dd') as rent_end,\r\n"
+				    		+ "(PRICE + INSURANCE) AS MONEY \r\n"
+				    		+ "FROM CAR JOIN CAR_RENT \r\n"
+				    		+ "using(car_no)\r\n"
+				    		+ "WHERE NAME = ?\r\n"
+				    		+ "ORDER BY rent_start";
 				    
 				    PreparedStatement ps = connection.prepareStatement(sql);
 				    ps.setString(1, name);
@@ -128,10 +120,9 @@ public class CustomerDAO {
 				        String carType = rs.getString("CAR_TYPE");
 				        String rentStart = rs.getString("RENT_START");
 				        String rentEnd = rs.getString("RENT_END");
-				        String paymentMethod = rs.getString("PAYMENT_METHOD");
 				        int money = rs.getInt("money");
 				        
-				        Reservation reservation = new Reservation(carNo, carType, rentStart, rentEnd, paymentMethod, money);
+				        Reservation reservation = new Reservation(carNo, carType, rentStart, rentEnd,  money);
 				        reservations.add(reservation);
 				    }
 				    
