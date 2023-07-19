@@ -15,7 +15,6 @@ public class Reservation {
     private String carType;
     private String rentStart;
     private String rentEnd;
-    private String paymentMethod;
     private int money;
 
 }
