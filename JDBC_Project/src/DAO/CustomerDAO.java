@@ -24,12 +24,9 @@ public class CustomerDAO {
 		Connection connection = OracleUtility.getConnection();
 		String sql = "select name from customer where customer_id = ? and pw = ?";
 		PreparedStatement ps = connection.prepareStatement(sql);
-		
 		Customer result = null;
-		
 		ps.setString(1, id);
 		ps.setString(2, password);
-
 		ResultSet rs = ps.executeQuery();
 		if(rs.next()) {
 			result = Customer.builder()
@@ -39,7 +36,6 @@ public class CustomerDAO {
 		connection.close();
 		ps.close();
 		rs.close();
-		
 		return result;
 	}
 	
