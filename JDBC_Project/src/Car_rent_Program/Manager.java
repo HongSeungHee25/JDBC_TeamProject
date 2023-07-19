@@ -649,7 +649,7 @@ public class Manager extends JPanel {
 		icon2 = new ImageIcon(im2);
 
 		calendar_Label = new JLabel(icon);
-		calendar_Label.setBounds(720, 305, 50, 50);
+		calendar_Label.setBounds(720, 348, 50, 55);
 		car_inspection_Panel.add(calendar_Label);
 
 		calendar_Label.addMouseListener(new MouseAdapter() {
