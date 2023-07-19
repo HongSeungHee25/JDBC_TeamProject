@@ -103,12 +103,20 @@ public class CustomerDAO {
 				    List<Reservation> reservations = new ArrayList<>();
 				    
 				    Connection connection = OracleUtility.getConnection();
-				    String sql = "SELECT car_no , car_type, to_char(rent_start,'yyyy-mm-dd') as rent_start, TO_CHAR(rent_end, 'yyyy-mm-dd') as rent_end,\r\n"
-				    		+ "(PRICE + INSURANCE) AS MONEY \r\n"
-				    		+ "FROM CAR JOIN CAR_RENT \r\n"
-				    		+ "using(car_no)\r\n"
-				    		+ "WHERE NAME = ?\r\n"
-				    		+ "ORDER BY rent_start";
+				    String sql = "SELECT\r\n"
+				    		+ "    b.car_no,\r\n"
+				    		+ "    a.car_type,\r\n"
+				    		+ "    TO_CHAR(b.rent_start, 'yyyy-mm-dd') AS rent_start,\r\n"
+				    		+ "    TO_CHAR(b.rent_end, 'yyyy-mm-dd') AS rent_end,\r\n"
+				    		+ "    (a.PRICE + a.INSURANCE) * (b.rent_end - b.rent_start) AS MONEY\r\n"
+				    		+ "FROM\r\n"
+				    		+ "    CAR a\r\n"
+				    		+ "JOIN\r\n"
+				    		+ "    CAR_RENT b ON a.car_no = b.car_no\r\n"
+				    		+ "WHERE\r\n"
+				    		+ "    b.NAME = ?\r\n"
+				    		+ "ORDER BY\r\n"
+				    		+ "    b.rent_start";
 				    
 				    PreparedStatement ps = connection.prepareStatement(sql);
 				    ps.setString(1, name);
