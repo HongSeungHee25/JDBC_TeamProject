@@ -1225,7 +1225,7 @@ public class Manager extends JPanel {
 		JFrame frame = new JFrame("관리자 관리 창");
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setResizable(false);
-		frame.setIconImage(Toolkit.getDefaultToolkit().getImage("C:/Users/82108/OneDrive/바탕 화면/자동차 로고/로그인Test.jpg"));
+		frame.setIconImage(Toolkit.getDefaultToolkit().getImage("./image/차량선택 백그라운드.jpg")); // 프로젝트 내부 경로로 변경
 
 		// 패널 생성 및 프레임에 추가
 		Manager manager = new Manager();
