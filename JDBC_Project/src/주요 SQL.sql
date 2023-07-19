@@ -13,20 +13,12 @@ SELECT RENT_NO , name, CAR_NO ,TO_CHAR(RENT_START,'yyyy-mm-dd') AS rent_start,TO
 FROM CAR_RENT cr WHERE name = '홍승희' AND rownum = 1 ORDER BY RENT_NO DESC;
 
 -- 회원 로그인해서 마이페이지에서 예약 내역 조회하기
-SELECT 
-c.CAR_NO,
-c.CAR_TYPE,
-TO_CHAR(cr.RENT_START, 'yyyy-mm-dd') AS RENT_START,
-TO_CHAR(cr.RENT_END, 'yyyy-mm-dd') AS RENT_END,
-p.PAYMENT_METHOD, 
-c.PRICE + c.INSURANCE AS money 
-FROM 
-CAR c 
-JOIN CAR_RENT cr ON c.CAR_NO = cr.CAR_NO 
-JOIN PAYMENT p ON c.CAR_NO = p.CAR_NO 
-WHERE
-cr.NAME = '홍승희'
-ORDER BY RENT_START;
+SELECT car_no , car_type, to_char(rent_start,'yyyy-mm-dd') AS rent_start, TO_CHAR(rent_end, 'yyyy-mm-dd') AS rent_end,
+(PRICE + INSURANCE) AS MONEY 
+FROM CAR JOIN CAR_RENT 
+using(car_no)
+WHERE NAME = '홍승희'
+ORDER BY rent_start;
 
 -- 관리자페이지에서 회원별 매출 등급 넣어서 확인
 SELECT name, total_money, payment_method,
