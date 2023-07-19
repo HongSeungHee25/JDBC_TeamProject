@@ -17,7 +17,7 @@ public class Customer {
 	private String customer_id;
 	private String pw;
 	private String phone;
-	private String licence;
+	private String licence; 
 }
 
 
