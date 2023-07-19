@@ -76,7 +76,7 @@ public class Manager extends JPanel {
 	String[] service = {"순서","회원 이름","회원 ID","전화번호","접수내용"};
 	String[] customer = { "회원 이름", "회원 ID", "회원 PW", "전화번호", "면허증 여부" };
 	String[] price = { "날짜", "결제 방법", "금액" };
-	String[] customer_price = { "회원 이름","총 결제 금액", "결제 방법", "등급" };
+	String[] customer_price = { "회원 이름","총 결제 금액", "등급" };
 	String[] Car_Inspection_menu = { "차량 번호", "검사 종류", "마지막 검사날짜", "다음 검사날짜" };
 	String[] car_rent = { "차량 번호", "차량 등급", "차량 종류", "예약 상태", "대여 요금", "보험료(자차)", "연료" };
 
@@ -278,7 +278,7 @@ public class Manager extends JPanel {
 		customer_price_jtf.setFont(new Font("맑은 고딕", Font.PLAIN, 18));
 		customer_price_jtf.setBounds(120, 10, 400, 40); // 텍스트 입력창 크기
 
-		String[] customer_price_temp = { "회원 이름", "결제 방법","등급" };
+		String[] customer_price_temp = { "회원 이름","등급" };
 		JComboBox<String> customer_price_jc = new JComboBox<>(customer_price_temp); // 선택항목
 		customer_price_jc.setFont(new Font("맑은 고딕", Font.BOLD, 18));
 		customer_price_jc.setBounds(550, 10, 120, 40); // 선택항목 크기
@@ -984,11 +984,10 @@ public class Manager extends JPanel {
 
             for (int i = 0; i < monthTotalList.size(); i++) {
                 Manager_Pay payment = monthTotalList.get(i);
-                String[] rowData = new String[4];
+                String[] rowData = new String[3];
                 rowData[0] = payment.getName();
                 rowData[1] = String.valueOf(formatter.format(payment.getMoney()));
-                rowData[2] = payment.getPayment_method();
-                rowData[3] = payment.getGrade();
+                rowData[2] = payment.getGrade();
 
                 customer_price_dm.addRow(rowData);
             }
@@ -1023,19 +1022,16 @@ public class Manager extends JPanel {
 
 			for (int i = 0; i < monthTotalList.size(); i++) {
 				Manager_Pay payment = monthTotalList.get(i);
-				String[] rowData = new String[4];
+				String[] rowData = new String[3];
 				rowData[0] = payment.getName();
 				rowData[1] = String.valueOf(formatter.format(payment.getMoney()));
-				rowData[2] = payment.getPayment_method();
-				rowData[3] = payment.getGrade();
+				rowData[2] = payment.getGrade();
 
 				boolean isMatched = false; // 검색 결과 여부를 판단하는 변수
 
 				if (selectedOption.equals("회원 이름") && rowData[0].contains(find)) {
 					isMatched = true;
-				} else if (selectedOption.equals("결제 방법") && rowData[2].contains(find)) {
-					isMatched = true;
-				}else if (selectedOption.equals("등급") && rowData[3].contains(find)) {
+				}else if (selectedOption.equals("등급") && rowData[2].contains(find)) {
 					isMatched = true;
 				}
 				if (isMatched) {
