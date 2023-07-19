@@ -51,7 +51,7 @@ public class MyPage extends JFrame {
 	
 	private DefaultTableModel rent_dm; 
 	private JTable rent_jt;
-	private String[] car_rent = {"차량 번호", "차량 종류","대여 날짜","반납 날짜", "결제 방법", "금액" };
+	private String[] car_rent = {"차량 번호", "차량 종류","대여 날짜","반납 날짜", "금액" };
 	JLabel carRent_no;
 	JLabel rentName;
 	JLabel rentCar_no;
@@ -356,7 +356,7 @@ public class MyPage extends JFrame {
         rent_jtf.setFont(new Font("맑은 고딕", Font.PLAIN, 18));
         rent_jtf.setBounds(120, 10, 400, 40); // 텍스트 입력창 크기
 
-        String[] rent_temp = {"차량 종류","결제 방법"};
+        String[] rent_temp = {"차량 종류"};
         JComboBox<String> rent_jc = new JComboBox<>(rent_temp); // 선택항목
         rent_jc.setFont(new Font("맑은 고딕", Font.BOLD, 18));
         rent_jc.setBounds(550, 10, 120, 40); // 선택항목 크기
@@ -383,34 +383,30 @@ public class MyPage extends JFrame {
                     rightRenderer.setHorizontalAlignment(SwingConstants.RIGHT); // 오른쪽 정렬 설정
         	        
                     for (Reservation reservation : reservations) {
-                        String[] rowData = new String[6];
+                        String[] rowData = new String[5];
                         rowData[0] = reservation.getCarNo();
                         rowData[1] = reservation.getCarType();
                         rowData[2] = reservation.getRentStart();
                         rowData[3] = reservation.getRentEnd();
-                        rowData[4] = reservation.getPaymentMethod();
-                        rowData[5] = String.valueOf(formatter.format(reservation.getMoney()));
+                        rowData[4] = String.valueOf(formatter.format(reservation.getMoney()));
                         
                         boolean isMatched = false; // 검색 결과 여부를 판단하는 변수
 
                         if (selectedOption.equals("차량 종류") && rowData[1].contains(searchKeyword)) {
                             isMatched = true;
-                        } else if (selectedOption.equals("결제 방법") && rowData[4].contains(searchKeyword)) {
-                            isMatched = true;
                         }
-
                         if (isMatched) {
                             rent_dm.addRow(rowData);
                         }
                     }
                     // 오른쪽 정렬 설정 적용
                     TableColumnModel columnModel = rent_jt.getColumnModel();
-                    columnModel.getColumn(5).setCellRenderer(rightRenderer);
+                    columnModel.getColumn(4).setCellRenderer(rightRenderer);
                     
                     
                  // 가운데 정렬 설정 적용
         	        for (int i = 0; i < columnModel.getColumnCount(); i++) {
-        	            if (i != 5) {
+        	            if (i != 4) {
         	                columnModel.getColumn(i).setCellRenderer(centerRenderer);
         	            }
         	        }
@@ -434,24 +430,23 @@ public class MyPage extends JFrame {
             rightRenderer.setHorizontalAlignment(SwingConstants.RIGHT); // 오른쪽 정렬 설정
             
             for (Reservation reservation : reservations) {
-                String[] rowData = new String[6];
+                String[] rowData = new String[5];
                 rowData[0] = reservation.getCarNo();
                 rowData[1] = reservation.getCarType();
                 rowData[2] = reservation.getRentStart();
                 rowData[3] = reservation.getRentEnd();
-                rowData[4] = reservation.getPaymentMethod();
-                rowData[5] = String.valueOf(formatter.format(reservation.getMoney()));
+                rowData[4] = String.valueOf(formatter.format(reservation.getMoney()));
                 
                 rent_dm.addRow(rowData);
             }
          // 오른쪽 정렬 설정 적용
             TableColumnModel columnModel = rent_jt.getColumnModel();
-            columnModel.getColumn(5).setCellRenderer(rightRenderer);
+            columnModel.getColumn(4).setCellRenderer(rightRenderer);
             
             
          // 가운데 정렬 설정 적용
 	        for (int i = 0; i < columnModel.getColumnCount(); i++) {
-	            if (i != 5) {
+	            if (i != 4) {
 	                columnModel.getColumn(i).setCellRenderer(centerRenderer);
 	            }
 	        }
