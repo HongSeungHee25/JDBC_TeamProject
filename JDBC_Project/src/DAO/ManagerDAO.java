@@ -29,7 +29,7 @@ public class ManagerDAO {
 			Connection connection = OracleUtility.getConnection();
 			List<Manager_Pay> saleslist = new ArrayList<>();
 			
-			String sql = "SELECT name, total_money, payment_method,\r\n"
+			String sql = "SELECT name, total_money,\r\n"
 					+ "       CASE\r\n"
 					+ "           WHEN total_money >= 500000 THEN 'VIP'\r\n"
 					+ "           WHEN total_money >= 300000 THEN 'GOLD'\r\n"
@@ -37,10 +37,10 @@ public class ManagerDAO {
 					+ "           ELSE 'FAMILY'\r\n"
 					+ "       END AS grade\r\n"
 					+ "FROM (\r\n"
-					+ "    SELECT p.name, SUM(money) AS total_money, p.payment_method\r\n"
+					+ "    SELECT p.name, SUM(money) AS total_money\r\n"
 					+ "    FROM PAYMENT p\r\n"
 					+ "    JOIN CAR c ON p.car_no = c.car_no\r\n"
-					+ "    GROUP BY p.name, p.payment_method\r\n"
+					+ "    GROUP BY p.name \r\n"
 					+ ") subquery\r\n"
 					+ "ORDER BY name";
 			try(
@@ -50,13 +50,11 @@ public class ManagerDAO {
 				while(rs.next()) {
 					String name = rs.getString(1);
 					int money = rs.getInt(2);
-					String payment_method = rs.getString(3);
-					String grade = rs.getString(4);
+					String grade = rs.getString(3);
 					
 					Manager_Pay pay = Manager_Pay.builder()
 							.name(name)
 							.money(money)
-							.payment_method(payment_method)
 							.grade(grade)
 							.build();
 					
@@ -97,14 +95,29 @@ public class ManagerDAO {
 	public List<Month_total> month_total() throws SQLException{
 		Connection connection = OracleUtility.getConnection();
 		
-		String sql = "SELECT \r\n"
-				+ "to_char(payment_day,'yyyy-mm') AS months, payment_method, money AS total\r\n"
-				+ "FROM ( SELECT p.payment_id, p.name, p.payment_day, p.money, p.payment_method, p.car_no\r\n"
-				+ "FROM PAYMENT p \r\n"
-				+ "JOIN CAR c\r\n"
-				+ "ON p.car_no = c.car_no)\r\n"
-				+ "GROUP BY to_char(payment_day,'yyyy-mm'), payment_method, money\r\n"
-				+ "ORDER BY months DESC";
+		String sql = "SELECT\r\n"
+				+ "    TO_CHAR(payment_day, 'yyyy-mm') AS months,\r\n"
+				+ "    payment_method,\r\n"
+				+ "    SUM(money) AS total\r\n"
+				+ "FROM\r\n"
+				+ "    (\r\n"
+				+ "        SELECT\r\n"
+				+ "            p.payment_id,\r\n"
+				+ "            p.name,\r\n"
+				+ "            p.payment_day,\r\n"
+				+ "            p.money,\r\n"
+				+ "            p.payment_method,\r\n"
+				+ "            p.car_no\r\n"
+				+ "        FROM\r\n"
+				+ "            PAYMENT p\r\n"
+				+ "        JOIN\r\n"
+				+ "            CAR c ON p.car_no = c.car_no\r\n"
+				+ "    )\r\n"
+				+ "GROUP BY\r\n"
+				+ "    TO_CHAR(payment_day, 'yyyy-mm'),\r\n"
+				+ "    payment_method\r\n"
+				+ "ORDER BY\r\n"
+				+ "    months DESC";
 		
 		PreparedStatement ps = connection.prepareStatement(sql);
 		
