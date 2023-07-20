@@ -86,12 +86,11 @@ public class CustomerDAO {
 				}
 				public int customerUpdate(Customer customer) throws SQLException{
 					Connection connection = OracleUtility.getConnection();
-					String sql = "UPDATE customer SET customer_id = ?, pw = ?, phone = ? WHERE name = ?";
+					String sql = "UPDATE customer SET pw = ?, phone = ? WHERE name = ?";
 					PreparedStatement ps = connection.prepareStatement(sql);
-					ps.setString(1, customer.getCustomer_id());
-					ps.setString(2, customer.getPw());
-					ps.setString(3, customer.getPhone());
-					ps.setString(4, customer.getName());
+					ps.setString(1, customer.getPw());
+					ps.setString(2, customer.getPhone());
+					ps.setString(3, customer.getName());
 					
 					int result = ps.executeUpdate();
 					
