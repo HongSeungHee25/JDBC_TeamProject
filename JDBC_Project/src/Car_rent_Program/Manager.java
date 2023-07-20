@@ -179,6 +179,15 @@ public class Manager extends JPanel {
 		customer_Service_jsp.setBounds(10, 60, 870, 695);
 		customer_Service.add(customer_Service_jsp);
 		
+		customer_Service_btn.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				String find = textField.getText();
+				String selectedOption = (String) customer_Service_jc.getSelectedItem();
+				customer_service_searchAndDisplayData(find, selectedOption);
+			}
+		});
+		
 
 		//초기 데이터 표시 
 		customer_service_displayAllData();
@@ -687,21 +696,18 @@ public class Manager extends JPanel {
 				JOptionPane.showMessageDialog(null, "모두 입력해야 차량 검사 등록이 가능합니다.");
 			} else {
 				try {
-					SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-					java.util.Date last_date = dateFormat.parse(last_date_textField.getText());
-					java.util.Date next_date = dateFormat.parse(next_date_textField.getText());
+					// java.util.Date를 java.sql.Date로 변환
+					java.sql.Date sqlLastDate = new java.sql.Date(last_date.getTime());
+					java.sql.Date sqlNextDate = new java.sql.Date(next_date.getTime());
 
 					Car_Inspection car = Car_Inspection.builder().car_no(car_inspection_no_textField.getText())
-							.inspection_type(car_inspection_textField.getText()).Last_date((Date) last_date)
-							.Next_date((Date) next_date).build();
-
+					    .inspection_type(car_inspection_textField.getText()).Last_date(sqlLastDate)
+					    .Next_date(sqlNextDate).build();
 					if (ManagerDAO.getManagerDAO().insertInspection(car)) {
 						JOptionPane.showMessageDialog(null, "차량 검사 등록 되었습니다.");
 					} else {
 						JOptionPane.showMessageDialog(null, "차량 검사 등록에 실패하였습니다.");
 					}
-				} catch (ParseException ex) {
-					JOptionPane.showMessageDialog(null, "날짜 형식이 올바르지 않습니다.", "오류", JOptionPane.ERROR_MESSAGE);
 				} catch (SQLException ex) {
 					JOptionPane.showMessageDialog(null, "차량 검사 등록에 실패하였습니다.", "오류", JOptionPane.ERROR_MESSAGE);
 				}
@@ -1189,7 +1195,7 @@ public class Manager extends JPanel {
 
 					boolean isMatched = false; // 검색 결과 여부를 판단하는 변수
 
-					if (selectedOption.equals("회원 이름") && rowData[0].contains(find)) {
+					if (selectedOption.equals("회원 이름") && rowData[1].contains(find)) {
 						isMatched = true;
 					} else if (selectedOption.equals("접수내용") && rowData[4].contains(find)) {
 						isMatched = true;
