@@ -11,6 +11,7 @@ import DTO.Car_Inspection;
 import DTO.Car_rent;
 
 
+@SuppressWarnings("unused")
 public class CarInspectionDAO {
 	
 	private static CarInspectionDAO carDao = new CarInspectionDAO();

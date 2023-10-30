@@ -173,7 +173,7 @@ public class Pay extends JPanel {
 		/////////////////////////////////////////////////////////////////
 		
 		
-		choicecar_label = new JLabel("선택한 차종 : ");
+		choicecar_label = new JLabel("선택한 차번호 : ");
 		choicecar_label.setHorizontalAlignment(SwingConstants.CENTER);
 		choicecar_label.setFont(new Font("휴먼둥근헤드라인", Font.BOLD, 22));
 		choicecar_label.setForeground(new Color(255, 255, 255));
